@@ -1,0 +1,84 @@
+﻿[dotenv@17.2.3] injecting env (5) from .env -- tip: ΓÜÖ∩╕Å  load multiple .env files with { path: ['.env.local', '.env'] }
+=== DIAGN├ôSTICO REPORTE 12 ===
+MOODLE_URL: http://localhost
+Total filas: 24
+Filas recibidas: 24
+
+=== HEADERS ===
+  Header[0]: "Username"
+  Header[1]: "Course short name"
+  Header[2]: "Last access to course"
+  Header[3]: "Time created"
+
+=== PRIMERAS 5 FILAS (detalle completo) ===
+
+--- Fila 0 ---
+  Col[0] type=string:
+    value: "admin"
+  Col[1] type=string:
+    value: "A"
+  Col[2] type=string:
+    value: "Thursday, 19 February 2026, 6:58 PM"
+  Col[3] type=string:
+    value: "Wednesday, 11 February 2026, 9:35 PM"
+
+--- Fila 1 ---
+  Col[0] type=string:
+    value: "fran"
+  Col[1] type=string:
+    value: "A"
+  Col[2] type=string:
+    value: "Monday, 16 February 2026, 5:31 PM"
+  Col[3] type=string:
+    value: "Wednesday, 11 February 2026, 10:06 PM"
+
+--- Fila 2 ---
+  Col[0] type=string:
+    value: "rober"
+  Col[1] type=string:
+    value: "A"
+  Col[2] type=string:
+    value: "Never"
+  Col[3] type=string:
+    value: "Friday, 13 February 2026, 6:56 PM"
+
+--- Fila 3 ---
+  Col[0] type=string:
+    value: "oscar"
+  Col[1] type=string:
+    value: "A"
+  Col[2] type=string:
+    value: "Monday, 16 February 2026, 4:57 PM"
+  Col[3] type=string:
+    value: "Thursday, 12 February 2026, 1:11 AM"
+
+--- Fila 4 ---
+  Col[0] type=string:
+    value: "karla"
+  Col[1] type=string:
+    value: "A"
+  Col[2] type=string:
+    value: "Thursday, 12 February 2026, 5:41 PM"
+  Col[3] type=string:
+    value: "Thursday, 12 February 2026, 5:40 PM"
+
+=== CURSOS ├ÜNICOS ===
+  - "A"
+  - "B"
+  - "c"
+  - "CPP-AWK-0138	"
+  - "Google Data Studio - 1238037177"
+
+=== USUARIOS CON ACCESO (no 'Nunca') ===
+  admin | A | Thursday, 19 February 2026, 6:58 PM
+  fran | A | Monday, 16 February 2026, 5:31 PM
+  oscar | A | Monday, 16 February 2026, 4:57 PM
+  karla | A | Thursday, 12 February 2026, 5:41 PM
+  yenetsi | A | Monday, 16 February 2026, 4:57 PM
+  admin | B | Thursday, 19 February 2026, 10:53 PM
+  oscar | B | Monday, 16 February 2026, 4:55 PM
+  karla | B | Tuesday, 24 February 2026, 7:02 PM
+  admin | c | Monday, 16 February 2026, 9:30 PM
+  fran | c | Monday, 16 February 2026, 5:19 PM
+  admin | Google Data Studio - 1238037177 | Tuesday, 24 February 2026, 7:04 PM
+  fran | Google Data Studio - 1238037177 | Tuesday, 24 February 2026, 8:42 PM

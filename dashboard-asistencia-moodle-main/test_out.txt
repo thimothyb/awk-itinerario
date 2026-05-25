@@ -1,0 +1,41 @@
+﻿Probando endpoint /api/dailystats/6...
+Status: 200
+Data Type: object
+Data: {
+  "ok": true,
+  "mensaje": "Procesados 3 usuarios con horario 00:00 - 23:59",
+  "data": [
+    {
+      "usuario": "admin",
+      "groupName": "Sin Grupo",
+      "minutosTotales": 170,
+      "diasDetalle": [
+        {
+          "fecha": "2026-02-24",
+          "minutos": 170,
+          "firstTs": 1771974240000,
+          "lastTs": 1771984440000
+        }
+      ]
+    },
+    {
+      "usuario": "fran",
+      "groupName": "Sin Grupo",
+      "minutosTotales": 170,
+      "diasDetalle": [
+        {
+          "fecha": "2026-02-25",
+          "minutos": 170,
+          "firstTs": 1771980120000,
+          "lastTs": 1771990320000
+        }
+      ]
+    },
+    {
+      "usuario": "bbrown_api",
+      "groupName": "Sin Grupo",
+      "minutosTotales": 0,
+      "diasDetalle": []
+    }
+  ]
+}
