@@ -395,9 +395,10 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                 params: { courseShortname: course.shortname }
             });
             onCourseSelect(course);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Error al sincronizar datos");
+            const detalle = error?.response?.data?.detalle || error?.response?.data?.error || error?.message;
+            alert(`Error al sincronizar datos${detalle ? `: ${detalle}` : ''}`);
         } finally {
             setSyncingId(null);
         }

@@ -45,7 +45,9 @@ export function ConditionalEnrolModal({ show, onHide, destCourse }: ConditionalE
         setError('');
         try {
             const [coursesRes, rulesRes] = await Promise.all([
-                axios.get('/api/moodle/courses'),
+                axios.get('/api/moodle/courses', {
+                    params: { courseId: destCourse?.courseId }
+                }),
                 axios.get(`/api/moodle/conditional-rules/${destCourse?.courseId}`)
             ]);
 
@@ -96,7 +98,9 @@ export function ConditionalEnrolModal({ show, onHide, destCourse }: ConditionalE
         if (!destCourse) return;
         setDeletingId(instanceId);
         try {
-            const res = await axios.delete(`/api/moodle/conditional-rules/${instanceId}`);
+            const res = await axios.delete(`/api/moodle/conditional-rules/${instanceId}`, {
+                params: { courseId: destCourse.courseId }
+            });
             if (res.data.ok) {
                 setRules(prev => prev.filter(r => r.id !== instanceId));
             }

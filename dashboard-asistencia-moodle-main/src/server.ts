@@ -64,14 +64,103 @@ type AttendanceSettingsDoc = {
   updatedAt?: Date;
 };
 
+type RegisteredCourseDoc = {
+  courseId?: number;
+  shortname?: string;
+  fullname?: string;
+  moodleUrl?: string;
+  moodleToken?: string;
+  [key: string]: any;
+};
+
+type MoodleAccessConfig = {
+  moodleUrl: string;
+  moodleToken: string;
+  wsUrl: string;
+  source: 'course' | 'global';
+  courseConfig: RegisteredCourseDoc | null;
+};
+
+const normalizeCourseRef = (value: any): string => String(value ?? '').trim();
+
+const buildMoodleWsUrl = (moodleUrl: string): string => {
+  const cleanBase = String(moodleUrl || '').replace(/\/+$/, '');
+  return `${cleanBase}/webservice/rest/server.php`;
+};
+
+const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const findRegisteredCourse = async (db: any, courseRefRaw: any): Promise<RegisteredCourseDoc | null> => {
+  const courseRef = normalizeCourseRef(courseRefRaw);
+  if (!courseRef) return null;
+
+  const coursesCol = db.collection('registeredCourses');
+  let courseConfig: RegisteredCourseDoc | null = null;
+
+  const numericCourseId = Number(courseRef);
+  if (!Number.isNaN(numericCourseId)) {
+    courseConfig = await coursesCol.findOne({ courseId: numericCourseId });
+  }
+
+  if (!courseConfig) {
+    courseConfig = await coursesCol.findOne({ shortname: courseRef });
+  }
+
+  if (!courseConfig) {
+    courseConfig = await coursesCol.findOne({
+      shortname: { $regex: `^${escapeRegex(courseRef)}$`, $options: 'i' },
+    });
+  }
+
+  return courseConfig;
+};
+
+const getMoodleAccessConfig = async (
+  db: any,
+  courseRefRaw: any,
+  options: { allowGlobalFallback?: boolean } = {},
+): Promise<MoodleAccessConfig> => {
+  const allowGlobalFallback = options.allowGlobalFallback ?? true;
+  const courseRef = normalizeCourseRef(courseRefRaw);
+  const courseConfig = await findRegisteredCourse(db, courseRef);
+
+  const courseMoodleUrl = normalizeCourseRef(courseConfig?.moodleUrl);
+  const courseMoodleToken = normalizeCourseRef(courseConfig?.moodleToken);
+
+  if (courseMoodleUrl && courseMoodleToken) {
+    return {
+      moodleUrl: courseMoodleUrl,
+      moodleToken: courseMoodleToken,
+      wsUrl: buildMoodleWsUrl(courseMoodleUrl),
+      source: 'course',
+      courseConfig,
+    };
+  }
+
+  if (allowGlobalFallback && MOODLE_URL && MOODLE_TOKEN) {
+    return {
+      moodleUrl: MOODLE_URL,
+      moodleToken: MOODLE_TOKEN,
+      wsUrl: buildMoodleWsUrl(MOODLE_URL),
+      source: 'global',
+      courseConfig,
+    };
+  }
+
+  const hint = courseRef ? ` para el curso "${courseRef}"` : '';
+  throw new Error(`No hay configuración de Moodle válida${hint}.`);
+};
+
 app.get('/api/curso/:id', async (req: any, res: any) => {
   try {
     const courseId = req.params.id;
     console.log(`Buscando curso ID: ${courseId}...`);
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, courseId);
 
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_course_get_courses',
         moodlewsrestformat: 'json',
         'options[ids][0]': courseId
@@ -93,12 +182,14 @@ app.get('/api/stats/:courseId', async (req: any, res: any) => {
     const courseIdParam = req.params.courseId;
     const userEmail = (req.query.userId || req.query.userid || '').toString().trim();
     const courseShortname = (req.query.courseShortname || courseIdParam || '').toString().trim();
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, courseIdParam, { allowGlobalFallback: false });
 
     console.log(`🕵🏻‍♀️ Buscando: Usuario="${userEmail}" en Curso="${courseShortname}"...`);
 
-    const moodleResponse = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const moodleResponse = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_reportbuilder_retrieve_report',
         moodlewsrestformat: 'json',
         reportid: 12,
@@ -222,7 +313,6 @@ app.get('/api/stats/:courseId', async (req: any, res: any) => {
       console.warn('⚠️ No se encontraron fechas válidas en los logs para calcular horas.');
     }
 
-    const db = await connectDB();
     const collection = db.collection('asistencia');
 
     const doc = {
@@ -265,39 +355,42 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
 
   try {
     const courseId = req.params.courseId?.toString().trim();
-    const courseShortname = (req.query.courseShortname || courseId || '').toString().trim();
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, courseId, { allowGlobalFallback: false });
+    const courseConfig = moodleConfig.courseConfig;
+    const normalizedCourseId = String(courseConfig?.courseId ?? courseId ?? '').trim();
+    const courseShortname = (
+      req.query.courseShortname ||
+      courseConfig?.shortname ||
+      courseId ||
+      ''
+    ).toString().trim();
 
-    if (!MOODLE_URL || !MOODLE_TOKEN) {
-      return res.status(500).json({ error: 'Configuración de Moodle incompleta.' });
-    }
-
-    if (!courseId) {
+    if (!normalizedCourseId) {
       return res.status(400).json({ error: 'courseId es requerido.' });
     }
 
-    const db = await connectDB();
-    const courseConfig = await db.collection('registeredCourses').findOne({ courseId: Number(courseId) });
     // Si no hay horario definido, usamos un default amplio (ej: 00:00 - 23:59)
     const horarioCurso = courseConfig?.scheduleTime || "00:00 - 23:59";
     console.log(`🕒 Aplicando horario de corte: ${horarioCurso}`);
 
-    let moodleCourseId = courseId;
+    let moodleCourseId: any = courseConfig?.courseId ?? normalizedCourseId;
 
     // Validación de ID numérico...
-    if (isNaN(Number(courseId))) {
+    if (isNaN(Number(moodleCourseId))) {
       try {
-        const allCoursesResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
-          params: { wstoken: MOODLE_TOKEN, wsfunction: 'core_course_get_courses', moodlewsrestformat: 'json' }
+        const allCoursesResp = await axios.get(moodleConfig.wsUrl, {
+          params: { wstoken: moodleConfig.moodleToken, wsfunction: 'core_course_get_courses', moodlewsrestformat: 'json' }
         });
         const allCourses = Array.isArray(allCoursesResp.data) ? allCoursesResp.data : [];
-        const match = allCourses.find((c: any) => c.shortname === courseId);
+        const match = allCourses.find((c: any) => c.shortname === courseId || c.shortname === normalizedCourseId);
         if (match) moodleCourseId = match.id;
       } catch (e) { console.error("Error cursos:", e); }
     }
 
     // Obtener usuarios matriculados
-    const enrolledResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
-      params: { wstoken: MOODLE_TOKEN, wsfunction: 'core_enrol_get_enrolled_users', moodlewsrestformat: 'json', courseid: moodleCourseId }
+    const enrolledResp = await axios.get(moodleConfig.wsUrl, {
+      params: { wstoken: moodleConfig.moodleToken, wsfunction: 'core_enrol_get_enrolled_users', moodlewsrestformat: 'json', courseid: moodleCourseId }
     });
     const enrolledList: any[] = Array.isArray(enrolledResp.data) ? enrolledResp.data : [];
 
@@ -316,13 +409,13 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
 
     // Obtener grupos profundos
     try {
-      const groupsResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
-        params: { wstoken: MOODLE_TOKEN, wsfunction: 'core_group_get_course_groups', moodlewsrestformat: 'json', courseid: moodleCourseId }
+      const groupsResp = await axios.get(moodleConfig.wsUrl, {
+        params: { wstoken: moodleConfig.moodleToken, wsfunction: 'core_group_get_course_groups', moodlewsrestformat: 'json', courseid: moodleCourseId }
       });
       const courseGroups = Array.isArray(groupsResp.data) ? groupsResp.data : [];
       for (const grp of courseGroups) {
-        const membersResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
-          params: { wstoken: MOODLE_TOKEN, wsfunction: 'core_group_get_group_members', moodlewsrestformat: 'json', 'groupids[0]': grp.id }
+        const membersResp = await axios.get(moodleConfig.wsUrl, {
+          params: { wstoken: moodleConfig.moodleToken, wsfunction: 'core_group_get_group_members', moodlewsrestformat: 'json', 'groupids[0]': grp.id }
         });
         const members = Array.isArray(membersResp.data) ? membersResp.data : [];
         for (const m of members) {
@@ -333,9 +426,9 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
     } catch (errGroup) { console.warn("Warn grupos:", errGroup); }
 
     // Obtener Reporte de Logs
-    const moodleRaw = await axios.post(`${MOODLE_URL}/webservice/rest/server.php`, null, {
+    const moodleRaw = await axios.post(moodleConfig.wsUrl, null, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_reportbuilder_retrieve_report',
         moodlewsrestformat: 'json',
         reportid: 12,
@@ -361,7 +454,7 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
     const courseShortIdx = 1;
     const durationIdx = -1;
     const dateIdx = 2;
-    const courseShortnameVal = (req.query.courseShortname || courseId || '').toString().trim();
+    const courseShortnameVal = (req.query.courseShortname || courseConfig?.shortname || courseId || '').toString().trim();
 
     // Nombres del curso de la DB para mejorar el match
     const dbCourseShortname = courseConfig?.shortname?.toLowerCase() || '';
@@ -519,11 +612,11 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
 
     if (out.length > 0) {
       // No borrar si son datos de demo/manuales protegidos
-      await collection.deleteMany({ courseId: courseId, isDemo: { $ne: true } });
+      await collection.deleteMany({ courseId: normalizedCourseId, isDemo: { $ne: true } });
       const docsToInsert = out.map(item => ({
         ...item,
-        courseId: courseId,
-        courseShortname: courseShortnameVal || courseId,
+        courseId: normalizedCourseId,
+        courseShortname: courseShortnameVal || normalizedCourseId,
         fechaProceso: new Date()
       }));
       await collection.insertMany(docsToInsert);
@@ -1107,9 +1200,11 @@ app.get('/api/reports/daily-export', async (req: any, res: any) => {
 
 app.get('/api/usuarios/:courseId', async (req: any, res: any) => {
   try {
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, req.params.courseId, { allowGlobalFallback: false });
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_enrol_get_enrolled_users',
         moodlewsrestformat: 'json',
         courseid: req.params.courseId
@@ -1127,17 +1222,20 @@ app.get('/api/usuarios/:courseId', async (req: any, res: any) => {
 app.get('/api/debug/native-report', async (req: any, res: any) => {
   try {
     const reportid = req.query.reportid;
+    const contextCourseId = normalizeCourseRef(req.query.courseId);
+    const db = await connectDB();
 
-    if (!MOODLE_URL || !MOODLE_TOKEN) {
-      return res.status(500).json({ error: 'Configuración de Moodle incompleta (MOODLE_URL/MOODLE_TOKEN).' });
-    }
     if (!reportid) {
       return res.status(400).json({ error: "Parámetro 'reportid' es requerido (?reportid=...)" });
     }
 
-    const moodleRes = await axios.post(`${MOODLE_URL}/webservice/rest/server.php`, null, {
+    const moodleConfig = contextCourseId
+      ? await getMoodleAccessConfig(db, contextCourseId, { allowGlobalFallback: false })
+      : await getMoodleAccessConfig(db, '', { allowGlobalFallback: true });
+
+    const moodleRes = await axios.post(moodleConfig.wsUrl, null, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_reportbuilder_retrieve_report',
         moodlewsrestformat: 'json',
         reportid: reportid,
@@ -1294,12 +1392,17 @@ app.post('/api/attendance-settings', async (req: any, res: any) => {
 app.get('/api/find-course/:query', async (req: any, res: any) => {
   try {
     const query = req.params.query.toLowerCase().trim();
+    const contextCourseId = normalizeCourseRef(req.query.courseId);
+    const db = await connectDB();
+    const moodleConfig = contextCourseId
+      ? await getMoodleAccessConfig(db, contextCourseId, { allowGlobalFallback: false })
+      : await getMoodleAccessConfig(db, '', { allowGlobalFallback: true });
 
     console.log(`🔎 Buscando curso manualmente: "${query}"...`);
 
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_course_get_courses',
         moodlewsrestformat: 'json',
       }
@@ -1341,19 +1444,14 @@ app.get('/api/courses', async (req: any, res: any) => {
   try {
     console.log('📚 Consultando lista de cursos a Moodle...');
 
-    // Llamada a Moodle para traer TODOS los cursos
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
-      params: {
-        wstoken: MOODLE_TOKEN,
-        wsfunction: 'core_course_get_courses',
-        moodlewsrestformat: 'json'
-      }
-    });
+    const db = await connectDB();
+    const registered = await db.collection('registeredCourses')
+      .find({}, { projection: { courseId: 1, shortname: 1, fullname: 1 } })
+      .sort({ shortname: 1 })
+      .toArray();
 
-    const allCourses = response.data || [];
-
-    const listaLimpia = allCourses.map((c: any) => ({
-      id: c.id,
+    const listaLimpia = registered.map((c: any) => ({
+      id: c.courseId,
       shortname: c.shortname,
       fullname: c.fullname
     }));
@@ -1362,7 +1460,7 @@ app.get('/api/courses', async (req: any, res: any) => {
 
   } catch (error) {
     console.error('Error al obtener cursos:', error);
-    res.status(500).json({ ok: false, error: 'Error al conectar con Moodle' });
+    res.status(500).json({ ok: false, error: 'Error al obtener cursos registrados' });
   }
 });
 
@@ -1370,28 +1468,34 @@ app.get('/api/courses', async (req: any, res: any) => {
 app.get('/api/groups/:courseId', async (req: any, res: any) => {
   try {
     const { courseId } = req.params;
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, courseId, { allowGlobalFallback: false });
+    const localCourseId = moodleConfig.courseConfig?.courseId;
+    const localShortname = moodleConfig.courseConfig?.shortname;
     let foundCourse = null;
 
-    if (!isNaN(Number(courseId))) {
-      const idResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const courseIdToFind = !Number.isNaN(Number(courseId)) ? Number(courseId) : localCourseId;
+
+    if (courseIdToFind !== undefined && courseIdToFind !== null && !Number.isNaN(Number(courseIdToFind))) {
+      const idResp = await axios.get(moodleConfig.wsUrl, {
         params: {
-          wstoken: MOODLE_TOKEN,
+          wstoken: moodleConfig.moodleToken,
           wsfunction: 'core_course_get_courses',
           moodlewsrestformat: 'json',
-          'options[ids][0]': courseId
+          'options[ids][0]': courseIdToFind
         }
       });
       if (idResp.data && idResp.data.length > 0) foundCourse = idResp.data[0];
     }
 
     if (!foundCourse) {
-      const fieldResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+      const fieldResp = await axios.get(moodleConfig.wsUrl, {
         params: {
-          wstoken: MOODLE_TOKEN,
+          wstoken: moodleConfig.moodleToken,
           wsfunction: 'core_course_get_courses_by_field',
           moodlewsrestformat: 'json',
           field: 'shortname',
-          value: courseId
+          value: localShortname || courseId
         }
       });
       if (fieldResp.data && fieldResp.data.courses && fieldResp.data.courses.length > 0) {
@@ -1403,9 +1507,9 @@ app.get('/api/groups/:courseId', async (req: any, res: any) => {
       return res.json({ ok: false, error: 'Curso no encontrado en Moodle' });
     }
 
-    const groupsResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const groupsResp = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_group_get_course_groups',
         moodlewsrestformat: 'json',
         courseid: foundCourse.id
@@ -1666,9 +1770,17 @@ app.get('/api/proxy-img', async (req: any, res: any) => {
 // 1. Listar TODOS los cursos de Moodle (para selector de curso origen)
 app.get('/api/moodle/courses', async (req: any, res: any) => {
   try {
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const contextCourseId = normalizeCourseRef(req.query.courseId || req.query.contextCourseId);
+    if (!contextCourseId) {
+      return res.status(400).json({ ok: false, error: 'courseId es requerido para listar cursos de Moodle.' });
+    }
+
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, contextCourseId, { allowGlobalFallback: false });
+
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_course_get_courses',
         moodlewsrestformat: 'json'
       }
@@ -1693,10 +1805,13 @@ app.get('/api/moodle/courses', async (req: any, res: any) => {
 app.get('/api/moodle/enrolled-users/:courseId', async (req: any, res: any) => {
   try {
     const { courseId } = req.params;
+    const contextCourseId = normalizeCourseRef(req.query.contextCourseId || req.query.courseId || courseId);
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, contextCourseId, { allowGlobalFallback: false });
 
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'core_enrol_get_enrolled_users',
         moodlewsrestformat: 'json',
         courseid: courseId
@@ -1726,14 +1841,17 @@ app.post('/api/moodle/bulk-enrol', async (req: any, res: any) => {
       return res.status(400).json({ ok: false, error: 'destCourseId y userIds[] son requeridos' });
     }
 
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, String(destCourseId), { allowGlobalFallback: false });
+
     console.log(`📥 Inscripción masiva: ${userIds.length} usuarios → Curso ${destCourseId}`);
 
     // 1. Obtener usuarios ya inscritos en el curso destino para filtrarlos
     let alreadyEnrolledIds: Set<number> = new Set();
     try {
-      const enrolledResp = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+      const enrolledResp = await axios.get(moodleConfig.wsUrl, {
         params: {
-          wstoken: MOODLE_TOKEN,
+          wstoken: moodleConfig.moodleToken,
           wsfunction: 'core_enrol_get_enrolled_users',
           moodlewsrestformat: 'json',
           courseid: destCourseId
@@ -1771,11 +1889,11 @@ app.post('/api/moodle/bulk-enrol', async (req: any, res: any) => {
     });
 
     const response = await axios.post(
-      `${MOODLE_URL}/webservice/rest/server.php`,
+      moodleConfig.wsUrl,
       null,
       {
         params: {
-          wstoken: MOODLE_TOKEN,
+          wstoken: moodleConfig.moodleToken,
           wsfunction: 'enrol_manual_enrol_users',
           moodlewsrestformat: 'json',
           ...enrolments
@@ -1828,14 +1946,20 @@ app.post('/api/moodle/send-welcome', async (req: any, res: any) => {
   try {
     const { courseId, userIds, courseName } = req.body;
 
+    if (!courseId) {
+      return res.status(400).json({ ok: false, error: 'courseId es requerido' });
+    }
     if (!Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ ok: false, error: 'userIds[] es requerido' });
     }
 
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, String(courseId), { allowGlobalFallback: false });
+
     console.log(`✉️ Enviando mensajes de bienvenida: ${userIds.length} usuarios → Curso ${courseId}`);
 
     const params: any = {
-      wstoken: MOODLE_TOKEN,
+      wstoken: moodleConfig.moodleToken,
       wsfunction: 'core_message_send_instant_messages',
       moodlewsrestformat: 'json',
     };
@@ -1846,7 +1970,7 @@ app.post('/api/moodle/send-welcome', async (req: any, res: any) => {
       params[`messages[${index}][textformat]`] = 1; // HTML
     });
 
-    const response = await axios.post(`${MOODLE_URL}/webservice/rest/server.php`, null, { params });
+    const response = await axios.post(moodleConfig.wsUrl, null, { params });
 
     // 1. Error global de Moodle (Token, función no activada, etc.)
     if (response.data && response.data.exception) {
@@ -1880,9 +2004,11 @@ app.post('/api/moodle/send-welcome', async (req: any, res: any) => {
 app.get('/api/moodle/conditional-rules/:courseId', async (req: any, res: any) => {
   try {
     const { courseId } = req.params;
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, String(courseId), { allowGlobalFallback: false });
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'enrol_courseapproval_get_instances',
         moodlewsrestformat: 'json',
         courseid: courseId
@@ -1910,9 +2036,12 @@ app.post('/api/moodle/conditional-rules', async (req: any, res: any) => {
       return res.status(400).json({ ok: false, error: 'courseId y sourceCourseId son requeridos' });
     }
 
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, String(courseId), { allowGlobalFallback: false });
+
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'enrol_courseapproval_add_instance',
         moodlewsrestformat: 'json',
         courseid: courseId,
@@ -1937,9 +2066,16 @@ app.post('/api/moodle/conditional-rules', async (req: any, res: any) => {
 app.delete('/api/moodle/conditional-rules/:instanceId', async (req: any, res: any) => {
   try {
     const { instanceId } = req.params;
-    const response = await axios.get(`${MOODLE_URL}/webservice/rest/server.php`, {
+    const contextCourseId = normalizeCourseRef(req.query.courseId || req.body?.courseId);
+    if (!contextCourseId) {
+      return res.status(400).json({ ok: false, error: 'courseId es requerido para eliminar una regla.' });
+    }
+
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, contextCourseId, { allowGlobalFallback: false });
+    const response = await axios.get(moodleConfig.wsUrl, {
       params: {
-        wstoken: MOODLE_TOKEN,
+        wstoken: moodleConfig.moodleToken,
         wsfunction: 'enrol_courseapproval_delete_instance',
         moodlewsrestformat: 'json',
         instanceid: instanceId

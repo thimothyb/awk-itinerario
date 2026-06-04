@@ -1,0 +1,26 @@
+{
+  "exportedAt": "2026-06-03T09:00:52.259Z",
+  "dbName": "moodle_logs_db",
+  "collections": [
+    {
+      "name": "asistencia",
+      "count": 56,
+      "file": "asistencia.ejson"
+    },
+    {
+      "name": "registeredCourses",
+      "count": 4,
+      "file": "registeredCourses.ejson"
+    },
+    {
+      "name": "attendanceSettings",
+      "count": 6,
+      "file": "attendanceSettings.ejson"
+    },
+    {
+      "name": "users",
+      "count": 1,
+      "file": "users.ejson"
+    }
+  ]
+}

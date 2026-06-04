@@ -1,0 +1,134 @@
+[
+  {
+    "_id": {
+      "$oid": "699c316f5025334819a8fb0d"
+    },
+    "courseId": {
+      "$numberInt": "5"
+    },
+    "cif": "A111111111",
+    "endDate": null,
+    "entityName": "Entidad de formación",
+    "fullname": "CPP-AWK-0138\tInteligencia Artificial",
+    "globalThreshold": {
+      "$numberInt": "80"
+    },
+    "imageUrl": null,
+    "minMinutes": {
+      "$numberInt": "170"
+    },
+    "moodleToken": "1118f17ed6c0221ef308b7f322a77313",
+    "moodleUrl": "http://localhost",
+    "registeredAt": {
+      "$date": {
+        "$numberLong": "1771843951485"
+      }
+    },
+    "shortname": "CPP-AWK-0138\t",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1762815600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "699c64fb5025334819a8fb15"
+    },
+    "courseId": {
+      "$numberInt": "6"
+    },
+    "cif": "A111111111",
+    "endDate": null,
+    "entityName": "Entidad de formación",
+    "fullname": "Herramientas de Google Data Studio ",
+    "globalThreshold": {
+      "$numberInt": "80"
+    },
+    "imageUrl": "http://localhost:3000/api/proxy-img?url=http%3A%2F%2Flocalhost%2Fwebservice%2Fpluginfile.php%2F44%2Fcourse%2Foverviewfiles%2F1.1.png%3Ftoken%3D04bd08757905dc3f42cc18dad09a322e",
+    "minMinutes": {
+      "$numberInt": "170"
+    },
+    "moodleToken": "04bd08757905dc3f42cc18dad09a322e",
+    "moodleUrl": "http://localhost",
+    "registeredAt": {
+      "$date": {
+        "$numberLong": "1779354879206"
+      }
+    },
+    "shortname": "Google Data Studio - 1238037177",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1657080000000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f13c94a6e4e98f8fe3c97"
+    },
+    "courseId": {
+      "$numberInt": "455"
+    },
+    "cif": "A111111111",
+    "endDate": null,
+    "entityName": "Entidad de formación",
+    "fullname": "FCOS02\tBÁSICO DE PREVENCIÓN DE RIESGOS LABORALES (N1)",
+    "globalThreshold": {
+      "$numberInt": "80"
+    },
+    "imageUrl": null,
+    "minMinutes": {
+      "$numberInt": "170"
+    },
+    "moodleToken": "1cc709568d03a656a28616af6d1153b6",
+    "moodleUrl": "https://plataforma-ibecon.grupoaspasia.com",
+    "registeredAt": {
+      "$date": {
+        "$numberLong": "1779373001711"
+      }
+    },
+    "shortname": "FCOS02",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1763161200000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40844a6e4e98f8fe3c98"
+    },
+    "courseId": {
+      "$numberInt": "24"
+    },
+    "cif": "A111111111",
+    "endDate": {
+      "$date": {
+        "$numberLong": "1776150540000"
+      }
+    },
+    "entityName": "Entidad de formación",
+    "fullname": "26EMHA06 INGLÉS PARA HOSTELERÍA",
+    "globalThreshold": {
+      "$numberInt": "80"
+    },
+    "imageUrl": "http://localhost:3000/api/proxy-img?url=http%3A%2F%2Flocalhost%2Fwebservice%2Fpluginfile.php%2F1280%2Fcourse%2Foverviewfiles%2Flibro-ingles-reducido.jpg%3Ftoken%3D04bd08757905dc3f42cc18dad09a322e",
+    "minMinutes": {
+      "$numberInt": "170"
+    },
+    "moodleToken": "04bd08757905dc3f42cc18dad09a322e",
+    "moodleUrl": "http://localhost",
+    "registeredAt": {
+      "$date": {
+        "$numberLong": "1779384452168"
+      }
+    },
+    "shortname": "26EMHA06INGLÉS",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1770733800000"
+      }
+    }
+  }
+]

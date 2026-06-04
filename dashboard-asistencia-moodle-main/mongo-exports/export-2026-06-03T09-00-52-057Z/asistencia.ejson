@@ -1,0 +1,3631 @@
+[
+  {
+    "_id": {
+      "$oid": "6a0f40e5ef19e7de43392a2a"
+    },
+    "usuario": "oscar",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-14",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1776195420000"
+        },
+        "lastTs": {
+          "$numberLong": "1776205620000"
+        }
+      }
+    ],
+    "courseId": "5",
+    "courseShortname": "CPP-AWK-0138",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384549381"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40e5ef19e7de43392a2b"
+    },
+    "usuario": "rpoblete",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "5",
+    "courseShortname": "CPP-AWK-0138",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384549381"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40e5ef19e7de43392a2c"
+    },
+    "usuario": "leonardobarreto",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "5",
+    "courseShortname": "CPP-AWK-0138",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384549381"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a2d"
+    },
+    "usuario": "admin1",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a2e"
+    },
+    "usuario": "fran",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-01",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1775055480000"
+        },
+        "lastTs": {
+          "$numberLong": "1775065680000"
+        }
+      }
+    ],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a2f"
+    },
+    "usuario": "rober",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a30"
+    },
+    "usuario": "oscar",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-14",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1776195420000"
+        },
+        "lastTs": {
+          "$numberLong": "1776205620000"
+        }
+      }
+    ],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a31"
+    },
+    "usuario": "karla",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-02-12",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1770907260000"
+        },
+        "lastTs": {
+          "$numberLong": "1770917460000"
+        }
+      }
+    ],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a32"
+    },
+    "usuario": "yenetsi",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a33"
+    },
+    "usuario": "bbrown_api",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a34"
+    },
+    "usuario": "dashboard_api",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a35"
+    },
+    "usuario": "rpoblete",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a36"
+    },
+    "usuario": "teacher1",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a37"
+    },
+    "usuario": "student1",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a38"
+    },
+    "usuario": "student2",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a39"
+    },
+    "usuario": "maria",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3a"
+    },
+    "usuario": "juan",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3b"
+    },
+    "usuario": "ana",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3c"
+    },
+    "usuario": "luis",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3d"
+    },
+    "usuario": "carla",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3e"
+    },
+    "usuario": "pedro",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a3f"
+    },
+    "usuario": "roberto",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a40"
+    },
+    "usuario": "sofia",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a41"
+    },
+    "usuario": "diego",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a42"
+    },
+    "usuario": "lucia",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a0f40ebef19e7de43392a43"
+    },
+    "usuario": "julia",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "6",
+    "courseShortname": "Google Data Studio - 1238037177",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779384555340"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd46f"
+    },
+    "usuario": "laura.garcia",
+    "nombre": "Laura García",
+    "dni": "46789213T",
+    "groupName": "Grupo A",
+    "perfilAsistencia": "excelente",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2813"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "177"
+        },
+        "entrada": "09:03",
+        "salida": "12:00",
+        "firstTs": {
+          "$numberLong": "1777294980000"
+        },
+        "lastTs": {
+          "$numberLong": "1777305600000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:05",
+        "salida": "12:10",
+        "firstTs": {
+          "$numberLong": "1777467900000"
+        },
+        "lastTs": {
+          "$numberLong": "1777479000000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:07",
+        "salida": "12:12",
+        "firstTs": {
+          "$numberLong": "1777554420000"
+        },
+        "lastTs": {
+          "$numberLong": "1777565520000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "175"
+        },
+        "entrada": "09:07",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1777640820000"
+        },
+        "lastTs": {
+          "$numberLong": "1777651320000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "171"
+        },
+        "entrada": "09:05",
+        "salida": "11:56",
+        "firstTs": {
+          "$numberLong": "1778072700000"
+        },
+        "lastTs": {
+          "$numberLong": "1778082960000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "177"
+        },
+        "entrada": "09:05",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1778159100000"
+        },
+        "lastTs": {
+          "$numberLong": "1778169720000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "171"
+        },
+        "entrada": "09:00",
+        "salida": "11:51",
+        "firstTs": {
+          "$numberLong": "1778245200000"
+        },
+        "lastTs": {
+          "$numberLong": "1778255460000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "172"
+        },
+        "entrada": "09:07",
+        "salida": "11:59",
+        "firstTs": {
+          "$numberLong": "1778504820000"
+        },
+        "lastTs": {
+          "$numberLong": "1778515140000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "183"
+        },
+        "entrada": "09:06",
+        "salida": "12:09",
+        "firstTs": {
+          "$numberLong": "1778591160000"
+        },
+        "lastTs": {
+          "$numberLong": "1778602140000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "173"
+        },
+        "entrada": "09:31",
+        "salida": "12:24",
+        "firstTs": {
+          "$numberLong": "1778765460000"
+        },
+        "lastTs": {
+          "$numberLong": "1778775840000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "176"
+        },
+        "entrada": "09:05",
+        "salida": "12:01",
+        "firstTs": {
+          "$numberLong": "1778850300000"
+        },
+        "lastTs": {
+          "$numberLong": "1778860860000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:00",
+        "salida": "11:50",
+        "firstTs": {
+          "$numberLong": "1779109200000"
+        },
+        "lastTs": {
+          "$numberLong": "1779119400000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:07",
+        "salida": "11:57",
+        "firstTs": {
+          "$numberLong": "1779196020000"
+        },
+        "lastTs": {
+          "$numberLong": "1779206220000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "175"
+        },
+        "entrada": "09:03",
+        "salida": "11:58",
+        "firstTs": {
+          "$numberLong": "1779282180000"
+        },
+        "lastTs": {
+          "$numberLong": "1779292680000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:02",
+        "salida": "12:01",
+        "firstTs": {
+          "$numberLong": "1779368520000"
+        },
+        "lastTs": {
+          "$numberLong": "1779379260000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "174"
+        },
+        "entrada": "09:04",
+        "salida": "11:58",
+        "firstTs": {
+          "$numberLong": "1779455040000"
+        },
+        "lastTs": {
+          "$numberLong": "1779465480000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532327"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd470"
+    },
+    "usuario": "carlos.martin",
+    "nombre": "Carlos Martín",
+    "dni": "50211867R",
+    "groupName": "Grupo A",
+    "perfilAsistencia": "excelente",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2814"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "184"
+        },
+        "entrada": "09:05",
+        "salida": "12:09",
+        "firstTs": {
+          "$numberLong": "1777295100000"
+        },
+        "lastTs": {
+          "$numberLong": "1777306140000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:02",
+        "salida": "11:52",
+        "firstTs": {
+          "$numberLong": "1777381320000"
+        },
+        "lastTs": {
+          "$numberLong": "1777391520000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "168"
+        },
+        "entrada": "09:05",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1777554300000"
+        },
+        "lastTs": {
+          "$numberLong": "1777564380000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "178"
+        },
+        "entrada": "09:17",
+        "salida": "12:15",
+        "firstTs": {
+          "$numberLong": "1777641420000"
+        },
+        "lastTs": {
+          "$numberLong": "1777652100000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "182"
+        },
+        "entrada": "09:00",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1777986000000"
+        },
+        "lastTs": {
+          "$numberLong": "1777996920000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "173"
+        },
+        "entrada": "09:04",
+        "salida": "11:57",
+        "firstTs": {
+          "$numberLong": "1778072640000"
+        },
+        "lastTs": {
+          "$numberLong": "1778083020000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:07",
+        "salida": "11:56",
+        "firstTs": {
+          "$numberLong": "1778159220000"
+        },
+        "lastTs": {
+          "$numberLong": "1778169360000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:12",
+        "salida": "12:17",
+        "firstTs": {
+          "$numberLong": "1778505120000"
+        },
+        "lastTs": {
+          "$numberLong": "1778516220000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "176"
+        },
+        "entrada": "09:04",
+        "salida": "12:00",
+        "firstTs": {
+          "$numberLong": "1778591040000"
+        },
+        "lastTs": {
+          "$numberLong": "1778601600000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:04",
+        "salida": "12:03",
+        "firstTs": {
+          "$numberLong": "1778763840000"
+        },
+        "lastTs": {
+          "$numberLong": "1778774580000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:03",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1778850180000"
+        },
+        "lastTs": {
+          "$numberLong": "1778860380000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "168"
+        },
+        "entrada": "09:05",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1779109500000"
+        },
+        "lastTs": {
+          "$numberLong": "1779119580000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:04",
+        "salida": "12:09",
+        "firstTs": {
+          "$numberLong": "1779195840000"
+        },
+        "lastTs": {
+          "$numberLong": "1779206940000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "182"
+        },
+        "entrada": "09:05",
+        "salida": "12:07",
+        "firstTs": {
+          "$numberLong": "1779282300000"
+        },
+        "lastTs": {
+          "$numberLong": "1779293220000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "178"
+        },
+        "entrada": "09:01",
+        "salida": "11:59",
+        "firstTs": {
+          "$numberLong": "1779368460000"
+        },
+        "lastTs": {
+          "$numberLong": "1779379140000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:03",
+        "salida": "11:50",
+        "firstTs": {
+          "$numberLong": "1779454980000"
+        },
+        "lastTs": {
+          "$numberLong": "1779465000000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532327"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd471"
+    },
+    "usuario": "marta.ruiz",
+    "nombre": "Marta Ruiz",
+    "dni": "71902485M",
+    "groupName": "Grupo A",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2259"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "142"
+        },
+        "entrada": "09:01",
+        "salida": "11:23",
+        "firstTs": {
+          "$numberLong": "1777294860000"
+        },
+        "lastTs": {
+          "$numberLong": "1777303380000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "138"
+        },
+        "entrada": "09:13",
+        "salida": "11:31",
+        "firstTs": {
+          "$numberLong": "1777381980000"
+        },
+        "lastTs": {
+          "$numberLong": "1777390260000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "157"
+        },
+        "entrada": "09:14",
+        "salida": "11:51",
+        "firstTs": {
+          "$numberLong": "1777468440000"
+        },
+        "lastTs": {
+          "$numberLong": "1777477860000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:01",
+        "salida": "11:22",
+        "firstTs": {
+          "$numberLong": "1777640460000"
+        },
+        "lastTs": {
+          "$numberLong": "1777648920000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "132"
+        },
+        "entrada": "09:00",
+        "salida": "11:12",
+        "firstTs": {
+          "$numberLong": "1777986000000"
+        },
+        "lastTs": {
+          "$numberLong": "1777993920000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:01",
+        "salida": "11:48",
+        "firstTs": {
+          "$numberLong": "1778072460000"
+        },
+        "lastTs": {
+          "$numberLong": "1778082480000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "137"
+        },
+        "entrada": "09:15",
+        "salida": "11:32",
+        "firstTs": {
+          "$numberLong": "1778159700000"
+        },
+        "lastTs": {
+          "$numberLong": "1778167920000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:06",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1778245560000"
+        },
+        "lastTs": {
+          "$numberLong": "1778255580000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:04",
+        "salida": "11:51",
+        "firstTs": {
+          "$numberLong": "1778504640000"
+        },
+        "lastTs": {
+          "$numberLong": "1778514660000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:01",
+        "salida": "11:22",
+        "firstTs": {
+          "$numberLong": "1778763660000"
+        },
+        "lastTs": {
+          "$numberLong": "1778772120000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "134"
+        },
+        "entrada": "09:29",
+        "salida": "11:43",
+        "firstTs": {
+          "$numberLong": "1778851740000"
+        },
+        "lastTs": {
+          "$numberLong": "1778859780000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:03",
+        "salida": "11:50",
+        "firstTs": {
+          "$numberLong": "1779195780000"
+        },
+        "lastTs": {
+          "$numberLong": "1779205800000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "154"
+        },
+        "entrada": "09:05",
+        "salida": "11:39",
+        "firstTs": {
+          "$numberLong": "1779282300000"
+        },
+        "lastTs": {
+          "$numberLong": "1779291540000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:17",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1779369420000"
+        },
+        "lastTs": {
+          "$numberLong": "1779378240000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "168"
+        },
+        "entrada": "09:30",
+        "salida": "12:18",
+        "firstTs": {
+          "$numberLong": "1779456600000"
+        },
+        "lastTs": {
+          "$numberLong": "1779466680000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [
+      {
+        "fecha": "2026-05-12",
+        "motivo": "Responsabilidad familiar justificada"
+      }
+    ],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532327"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd472"
+    },
+    "usuario": "david.lopez",
+    "nombre": "David López",
+    "dni": "38415792K",
+    "groupName": "Grupo A",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2217"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:06",
+        "salida": "11:33",
+        "firstTs": {
+          "$numberLong": "1777295160000"
+        },
+        "lastTs": {
+          "$numberLong": "1777303980000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "157"
+        },
+        "entrada": "09:00",
+        "salida": "11:37",
+        "firstTs": {
+          "$numberLong": "1777381200000"
+        },
+        "lastTs": {
+          "$numberLong": "1777390620000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "159"
+        },
+        "entrada": "09:26",
+        "salida": "12:05",
+        "firstTs": {
+          "$numberLong": "1777469160000"
+        },
+        "lastTs": {
+          "$numberLong": "1777478700000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "151"
+        },
+        "entrada": "09:02",
+        "salida": "11:33",
+        "firstTs": {
+          "$numberLong": "1777554120000"
+        },
+        "lastTs": {
+          "$numberLong": "1777563180000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:01",
+        "salida": "11:28",
+        "firstTs": {
+          "$numberLong": "1778072460000"
+        },
+        "lastTs": {
+          "$numberLong": "1778081280000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "148"
+        },
+        "entrada": "09:19",
+        "salida": "11:47",
+        "firstTs": {
+          "$numberLong": "1778159940000"
+        },
+        "lastTs": {
+          "$numberLong": "1778168820000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:31",
+        "salida": "11:58",
+        "firstTs": {
+          "$numberLong": "1778247060000"
+        },
+        "lastTs": {
+          "$numberLong": "1778255880000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "133"
+        },
+        "entrada": "09:04",
+        "salida": "11:17",
+        "firstTs": {
+          "$numberLong": "1778504640000"
+        },
+        "lastTs": {
+          "$numberLong": "1778512620000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "138"
+        },
+        "entrada": "09:01",
+        "salida": "11:19",
+        "firstTs": {
+          "$numberLong": "1778590860000"
+        },
+        "lastTs": {
+          "$numberLong": "1778599140000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "132"
+        },
+        "entrada": "09:04",
+        "salida": "11:16",
+        "firstTs": {
+          "$numberLong": "1778763840000"
+        },
+        "lastTs": {
+          "$numberLong": "1778771760000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "151"
+        },
+        "entrada": "09:26",
+        "salida": "11:57",
+        "firstTs": {
+          "$numberLong": "1778851560000"
+        },
+        "lastTs": {
+          "$numberLong": "1778860620000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:18",
+        "salida": "11:45",
+        "firstTs": {
+          "$numberLong": "1779110280000"
+        },
+        "lastTs": {
+          "$numberLong": "1779119100000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "161"
+        },
+        "entrada": "09:07",
+        "salida": "11:48",
+        "firstTs": {
+          "$numberLong": "1779196020000"
+        },
+        "lastTs": {
+          "$numberLong": "1779205680000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "166"
+        },
+        "entrada": "09:24",
+        "salida": "12:10",
+        "firstTs": {
+          "$numberLong": "1779369840000"
+        },
+        "lastTs": {
+          "$numberLong": "1779379800000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "133"
+        },
+        "entrada": "09:19",
+        "salida": "11:32",
+        "firstTs": {
+          "$numberLong": "1779455940000"
+        },
+        "lastTs": {
+          "$numberLong": "1779463920000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532328"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd473"
+    },
+    "usuario": "ana.torres",
+    "nombre": "Ana Torres",
+    "dni": "61120984P",
+    "groupName": "Grupo B",
+    "perfilAsistencia": "excelente",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2974"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "182"
+        },
+        "entrada": "09:06",
+        "salida": "12:08",
+        "firstTs": {
+          "$numberLong": "1777295160000"
+        },
+        "lastTs": {
+          "$numberLong": "1777306080000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "172"
+        },
+        "entrada": "09:06",
+        "salida": "11:58",
+        "firstTs": {
+          "$numberLong": "1777381560000"
+        },
+        "lastTs": {
+          "$numberLong": "1777391880000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "183"
+        },
+        "entrada": "09:01",
+        "salida": "12:04",
+        "firstTs": {
+          "$numberLong": "1777467660000"
+        },
+        "lastTs": {
+          "$numberLong": "1777478640000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:06",
+        "salida": "11:55",
+        "firstTs": {
+          "$numberLong": "1777554360000"
+        },
+        "lastTs": {
+          "$numberLong": "1777564500000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "183"
+        },
+        "entrada": "09:05",
+        "salida": "12:08",
+        "firstTs": {
+          "$numberLong": "1777640700000"
+        },
+        "lastTs": {
+          "$numberLong": "1777651680000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:05",
+        "salida": "12:04",
+        "firstTs": {
+          "$numberLong": "1777986300000"
+        },
+        "lastTs": {
+          "$numberLong": "1777997040000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:03",
+        "salida": "12:08",
+        "firstTs": {
+          "$numberLong": "1778072580000"
+        },
+        "lastTs": {
+          "$numberLong": "1778083680000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:06",
+        "salida": "11:56",
+        "firstTs": {
+          "$numberLong": "1778159160000"
+        },
+        "lastTs": {
+          "$numberLong": "1778169360000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "177"
+        },
+        "entrada": "09:06",
+        "salida": "12:03",
+        "firstTs": {
+          "$numberLong": "1778245560000"
+        },
+        "lastTs": {
+          "$numberLong": "1778256180000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:02",
+        "salida": "11:51",
+        "firstTs": {
+          "$numberLong": "1778590920000"
+        },
+        "lastTs": {
+          "$numberLong": "1778601060000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:30",
+        "salida": "12:20",
+        "firstTs": {
+          "$numberLong": "1778765400000"
+        },
+        "lastTs": {
+          "$numberLong": "1778775600000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "166"
+        },
+        "entrada": "09:07",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1778850420000"
+        },
+        "lastTs": {
+          "$numberLong": "1778860380000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "166"
+        },
+        "entrada": "09:02",
+        "salida": "11:48",
+        "firstTs": {
+          "$numberLong": "1779109320000"
+        },
+        "lastTs": {
+          "$numberLong": "1779119280000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:04",
+        "salida": "12:03",
+        "firstTs": {
+          "$numberLong": "1779195840000"
+        },
+        "lastTs": {
+          "$numberLong": "1779206580000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "172"
+        },
+        "entrada": "09:04",
+        "salida": "11:56",
+        "firstTs": {
+          "$numberLong": "1779282240000"
+        },
+        "lastTs": {
+          "$numberLong": "1779292560000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "173"
+        },
+        "entrada": "09:12",
+        "salida": "12:05",
+        "firstTs": {
+          "$numberLong": "1779369120000"
+        },
+        "lastTs": {
+          "$numberLong": "1779379500000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:03",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1779454980000"
+        },
+        "lastTs": {
+          "$numberLong": "1779465720000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532328"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd474"
+    },
+    "usuario": "jorge.santos",
+    "nombre": "Jorge Santos",
+    "dni": "43017655L",
+    "groupName": "Grupo B",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2279"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "145"
+        },
+        "entrada": "09:07",
+        "salida": "11:32",
+        "firstTs": {
+          "$numberLong": "1777295220000"
+        },
+        "lastTs": {
+          "$numberLong": "1777303920000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "160"
+        },
+        "entrada": "09:05",
+        "salida": "11:45",
+        "firstTs": {
+          "$numberLong": "1777381500000"
+        },
+        "lastTs": {
+          "$numberLong": "1777391100000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:26",
+        "salida": "12:13",
+        "firstTs": {
+          "$numberLong": "1777469160000"
+        },
+        "lastTs": {
+          "$numberLong": "1777479180000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "155"
+        },
+        "entrada": "09:07",
+        "salida": "11:42",
+        "firstTs": {
+          "$numberLong": "1777554420000"
+        },
+        "lastTs": {
+          "$numberLong": "1777563720000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:03",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1777640580000"
+        },
+        "lastTs": {
+          "$numberLong": "1777650780000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "151"
+        },
+        "entrada": "09:06",
+        "salida": "11:37",
+        "firstTs": {
+          "$numberLong": "1777986360000"
+        },
+        "lastTs": {
+          "$numberLong": "1777995420000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "135"
+        },
+        "entrada": "09:05",
+        "salida": "11:20",
+        "firstTs": {
+          "$numberLong": "1778072700000"
+        },
+        "lastTs": {
+          "$numberLong": "1778080800000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "147"
+        },
+        "entrada": "09:06",
+        "salida": "11:33",
+        "firstTs": {
+          "$numberLong": "1778159160000"
+        },
+        "lastTs": {
+          "$numberLong": "1778167980000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "142"
+        },
+        "entrada": "09:01",
+        "salida": "11:23",
+        "firstTs": {
+          "$numberLong": "1778504460000"
+        },
+        "lastTs": {
+          "$numberLong": "1778512980000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "162"
+        },
+        "entrada": "09:01",
+        "salida": "11:43",
+        "firstTs": {
+          "$numberLong": "1778590860000"
+        },
+        "lastTs": {
+          "$numberLong": "1778600580000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "150"
+        },
+        "entrada": "09:07",
+        "salida": "11:37",
+        "firstTs": {
+          "$numberLong": "1778764020000"
+        },
+        "lastTs": {
+          "$numberLong": "1778773020000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "161"
+        },
+        "entrada": "09:07",
+        "salida": "11:48",
+        "firstTs": {
+          "$numberLong": "1779109620000"
+        },
+        "lastTs": {
+          "$numberLong": "1779119280000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "146"
+        },
+        "entrada": "09:04",
+        "salida": "11:30",
+        "firstTs": {
+          "$numberLong": "1779195840000"
+        },
+        "lastTs": {
+          "$numberLong": "1779204600000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "149"
+        },
+        "entrada": "09:07",
+        "salida": "11:36",
+        "firstTs": {
+          "$numberLong": "1779368820000"
+        },
+        "lastTs": {
+          "$numberLong": "1779377760000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "139"
+        },
+        "entrada": "09:02",
+        "salida": "11:21",
+        "firstTs": {
+          "$numberLong": "1779454920000"
+        },
+        "lastTs": {
+          "$numberLong": "1779463260000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [
+      {
+        "fecha": "2026-05-15",
+        "motivo": "Responsabilidad familiar justificada"
+      }
+    ],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532328"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd475"
+    },
+    "usuario": "elena.navarro",
+    "nombre": "Elena Navarro",
+    "dni": "55423310N",
+    "groupName": "Grupo B",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2431"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "157"
+        },
+        "entrada": "09:07",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1777381620000"
+        },
+        "lastTs": {
+          "$numberLong": "1777391040000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:25",
+        "salida": "12:12",
+        "firstTs": {
+          "$numberLong": "1777469100000"
+        },
+        "lastTs": {
+          "$numberLong": "1777479120000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "135"
+        },
+        "entrada": "09:05",
+        "salida": "11:20",
+        "firstTs": {
+          "$numberLong": "1777554300000"
+        },
+        "lastTs": {
+          "$numberLong": "1777562400000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "153"
+        },
+        "entrada": "09:00",
+        "salida": "11:33",
+        "firstTs": {
+          "$numberLong": "1777640400000"
+        },
+        "lastTs": {
+          "$numberLong": "1777649580000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "168"
+        },
+        "entrada": "09:04",
+        "salida": "11:52",
+        "firstTs": {
+          "$numberLong": "1777986240000"
+        },
+        "lastTs": {
+          "$numberLong": "1777996320000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "159"
+        },
+        "entrada": "09:02",
+        "salida": "11:41",
+        "firstTs": {
+          "$numberLong": "1778072520000"
+        },
+        "lastTs": {
+          "$numberLong": "1778082060000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:06",
+        "salida": "11:55",
+        "firstTs": {
+          "$numberLong": "1778159160000"
+        },
+        "lastTs": {
+          "$numberLong": "1778169300000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "142"
+        },
+        "entrada": "09:05",
+        "salida": "11:27",
+        "firstTs": {
+          "$numberLong": "1778245500000"
+        },
+        "lastTs": {
+          "$numberLong": "1778254020000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "161"
+        },
+        "entrada": "09:18",
+        "salida": "11:59",
+        "firstTs": {
+          "$numberLong": "1778505480000"
+        },
+        "lastTs": {
+          "$numberLong": "1778515140000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "132"
+        },
+        "entrada": "09:02",
+        "salida": "11:14",
+        "firstTs": {
+          "$numberLong": "1778590920000"
+        },
+        "lastTs": {
+          "$numberLong": "1778598840000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "151"
+        },
+        "entrada": "09:30",
+        "salida": "12:01",
+        "firstTs": {
+          "$numberLong": "1778765400000"
+        },
+        "lastTs": {
+          "$numberLong": "1778774460000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "150"
+        },
+        "entrada": "09:20",
+        "salida": "11:50",
+        "firstTs": {
+          "$numberLong": "1778851200000"
+        },
+        "lastTs": {
+          "$numberLong": "1778860200000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:07",
+        "salida": "11:28",
+        "firstTs": {
+          "$numberLong": "1779109620000"
+        },
+        "lastTs": {
+          "$numberLong": "1779118080000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "151"
+        },
+        "entrada": "09:29",
+        "salida": "12:00",
+        "firstTs": {
+          "$numberLong": "1779197340000"
+        },
+        "lastTs": {
+          "$numberLong": "1779206400000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "137"
+        },
+        "entrada": "09:07",
+        "salida": "11:24",
+        "firstTs": {
+          "$numberLong": "1779282420000"
+        },
+        "lastTs": {
+          "$numberLong": "1779290640000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "158"
+        },
+        "entrada": "09:06",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1779455160000"
+        },
+        "lastTs": {
+          "$numberLong": "1779464640000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532328"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd476"
+    },
+    "usuario": "pablo.castro",
+    "nombre": "Pablo Castro",
+    "dni": "29364018H",
+    "groupName": "Grupo B",
+    "perfilAsistencia": "desertor",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "249"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "82"
+        },
+        "entrada": "09:05",
+        "salida": "10:27",
+        "firstTs": {
+          "$numberLong": "1777381500000"
+        },
+        "lastTs": {
+          "$numberLong": "1777386420000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "93"
+        },
+        "entrada": "09:06",
+        "salida": "10:39",
+        "firstTs": {
+          "$numberLong": "1777986360000"
+        },
+        "lastTs": {
+          "$numberLong": "1777991940000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "74"
+        },
+        "entrada": "09:06",
+        "salida": "10:20",
+        "firstTs": {
+          "$numberLong": "1778159160000"
+        },
+        "lastTs": {
+          "$numberLong": "1778163600000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532328"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd477"
+    },
+    "usuario": "lucia.mendez",
+    "nombre": "Lucía Méndez",
+    "dni": "67813459Z",
+    "groupName": "Grupo C",
+    "perfilAsistencia": "excelente",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "3202"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "176"
+        },
+        "entrada": "09:03",
+        "salida": "11:59",
+        "firstTs": {
+          "$numberLong": "1777294980000"
+        },
+        "lastTs": {
+          "$numberLong": "1777305540000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "175"
+        },
+        "entrada": "09:07",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1777381620000"
+        },
+        "lastTs": {
+          "$numberLong": "1777392120000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "181"
+        },
+        "entrada": "09:06",
+        "salida": "12:07",
+        "firstTs": {
+          "$numberLong": "1777467960000"
+        },
+        "lastTs": {
+          "$numberLong": "1777478820000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:03",
+        "salida": "11:53",
+        "firstTs": {
+          "$numberLong": "1777554180000"
+        },
+        "lastTs": {
+          "$numberLong": "1777564380000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "184"
+        },
+        "entrada": "09:02",
+        "salida": "12:06",
+        "firstTs": {
+          "$numberLong": "1777640520000"
+        },
+        "lastTs": {
+          "$numberLong": "1777651560000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "168"
+        },
+        "entrada": "09:06",
+        "salida": "11:54",
+        "firstTs": {
+          "$numberLong": "1777986360000"
+        },
+        "lastTs": {
+          "$numberLong": "1777996440000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:03",
+        "salida": "11:52",
+        "firstTs": {
+          "$numberLong": "1778072580000"
+        },
+        "lastTs": {
+          "$numberLong": "1778082720000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "179"
+        },
+        "entrada": "09:03",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1778158980000"
+        },
+        "lastTs": {
+          "$numberLong": "1778169720000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "174"
+        },
+        "entrada": "09:07",
+        "salida": "12:01",
+        "firstTs": {
+          "$numberLong": "1778245620000"
+        },
+        "lastTs": {
+          "$numberLong": "1778256060000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:02",
+        "salida": "11:49",
+        "firstTs": {
+          "$numberLong": "1778504520000"
+        },
+        "lastTs": {
+          "$numberLong": "1778514540000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "184"
+        },
+        "entrada": "09:03",
+        "salida": "12:07",
+        "firstTs": {
+          "$numberLong": "1778590980000"
+        },
+        "lastTs": {
+          "$numberLong": "1778602020000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "180"
+        },
+        "entrada": "09:03",
+        "salida": "12:03",
+        "firstTs": {
+          "$numberLong": "1778763780000"
+        },
+        "lastTs": {
+          "$numberLong": "1778774580000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "183"
+        },
+        "entrada": "09:07",
+        "salida": "12:10",
+        "firstTs": {
+          "$numberLong": "1778850420000"
+        },
+        "lastTs": {
+          "$numberLong": "1778861400000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "180"
+        },
+        "entrada": "09:02",
+        "salida": "12:02",
+        "firstTs": {
+          "$numberLong": "1779109320000"
+        },
+        "lastTs": {
+          "$numberLong": "1779120120000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "183"
+        },
+        "entrada": "09:05",
+        "salida": "12:08",
+        "firstTs": {
+          "$numberLong": "1779195900000"
+        },
+        "lastTs": {
+          "$numberLong": "1779206880000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "184"
+        },
+        "entrada": "09:00",
+        "salida": "12:04",
+        "firstTs": {
+          "$numberLong": "1779282000000"
+        },
+        "lastTs": {
+          "$numberLong": "1779293040000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "180"
+        },
+        "entrada": "09:01",
+        "salida": "12:01",
+        "firstTs": {
+          "$numberLong": "1779368460000"
+        },
+        "lastTs": {
+          "$numberLong": "1779379260000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "185"
+        },
+        "entrada": "09:07",
+        "salida": "12:12",
+        "firstTs": {
+          "$numberLong": "1779455220000"
+        },
+        "lastTs": {
+          "$numberLong": "1779466320000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532329"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd478"
+    },
+    "usuario": "sergio.vera",
+    "nombre": "Sergio Vera",
+    "dni": "74091582J",
+    "groupName": "Grupo C",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2424"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "148"
+        },
+        "entrada": "09:03",
+        "salida": "11:31",
+        "firstTs": {
+          "$numberLong": "1777381380000"
+        },
+        "lastTs": {
+          "$numberLong": "1777390260000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "145"
+        },
+        "entrada": "09:00",
+        "salida": "11:25",
+        "firstTs": {
+          "$numberLong": "1777467600000"
+        },
+        "lastTs": {
+          "$numberLong": "1777476300000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "166"
+        },
+        "entrada": "09:20",
+        "salida": "12:06",
+        "firstTs": {
+          "$numberLong": "1777555200000"
+        },
+        "lastTs": {
+          "$numberLong": "1777565160000"
+        }
+      },
+      {
+        "fecha": "2026-05-01",
+        "minutos": {
+          "$numberInt": "167"
+        },
+        "entrada": "09:02",
+        "salida": "11:49",
+        "firstTs": {
+          "$numberLong": "1777640520000"
+        },
+        "lastTs": {
+          "$numberLong": "1777650540000"
+        }
+      },
+      {
+        "fecha": "2026-05-05",
+        "minutos": {
+          "$numberInt": "153"
+        },
+        "entrada": "09:01",
+        "salida": "11:34",
+        "firstTs": {
+          "$numberLong": "1777986060000"
+        },
+        "lastTs": {
+          "$numberLong": "1777995240000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "144"
+        },
+        "entrada": "09:03",
+        "salida": "11:27",
+        "firstTs": {
+          "$numberLong": "1778158980000"
+        },
+        "lastTs": {
+          "$numberLong": "1778167620000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "133"
+        },
+        "entrada": "09:13",
+        "salida": "11:26",
+        "firstTs": {
+          "$numberLong": "1778245980000"
+        },
+        "lastTs": {
+          "$numberLong": "1778253960000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "132"
+        },
+        "entrada": "09:03",
+        "salida": "11:15",
+        "firstTs": {
+          "$numberLong": "1778504580000"
+        },
+        "lastTs": {
+          "$numberLong": "1778512500000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "164"
+        },
+        "entrada": "09:29",
+        "salida": "12:13",
+        "firstTs": {
+          "$numberLong": "1778592540000"
+        },
+        "lastTs": {
+          "$numberLong": "1778602380000"
+        }
+      },
+      {
+        "fecha": "2026-05-14",
+        "minutos": {
+          "$numberInt": "146"
+        },
+        "entrada": "09:00",
+        "salida": "11:26",
+        "firstTs": {
+          "$numberLong": "1778763600000"
+        },
+        "lastTs": {
+          "$numberLong": "1778772360000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "158"
+        },
+        "entrada": "09:06",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1778850360000"
+        },
+        "lastTs": {
+          "$numberLong": "1778859840000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "156"
+        },
+        "entrada": "09:06",
+        "salida": "11:42",
+        "firstTs": {
+          "$numberLong": "1779109560000"
+        },
+        "lastTs": {
+          "$numberLong": "1779118920000"
+        }
+      },
+      {
+        "fecha": "2026-05-19",
+        "minutos": {
+          "$numberInt": "134"
+        },
+        "entrada": "09:01",
+        "salida": "11:15",
+        "firstTs": {
+          "$numberLong": "1779195660000"
+        },
+        "lastTs": {
+          "$numberLong": "1779203700000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "152"
+        },
+        "entrada": "09:01",
+        "salida": "11:33",
+        "firstTs": {
+          "$numberLong": "1779282060000"
+        },
+        "lastTs": {
+          "$numberLong": "1779291180000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "164"
+        },
+        "entrada": "09:00",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1779368400000"
+        },
+        "lastTs": {
+          "$numberLong": "1779378240000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "162"
+        },
+        "entrada": "09:02",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1779454920000"
+        },
+        "lastTs": {
+          "$numberLong": "1779464640000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [
+      {
+        "fecha": "2026-05-06",
+        "motivo": "Gestión administrativa oficial"
+      }
+    ],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532329"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd479"
+    },
+    "usuario": "noelia.romero",
+    "nombre": "Noelia Romero",
+    "dni": "32177864C",
+    "groupName": "Grupo C",
+    "perfilAsistencia": "desertor",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "288"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "84"
+        },
+        "entrada": "09:22",
+        "salida": "10:46",
+        "firstTs": {
+          "$numberLong": "1777468920000"
+        },
+        "lastTs": {
+          "$numberLong": "1777473960000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "101"
+        },
+        "entrada": "09:18",
+        "salida": "10:59",
+        "firstTs": {
+          "$numberLong": "1778073480000"
+        },
+        "lastTs": {
+          "$numberLong": "1778079540000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "103"
+        },
+        "entrada": "09:15",
+        "salida": "10:58",
+        "firstTs": {
+          "$numberLong": "1778246100000"
+        },
+        "lastTs": {
+          "$numberLong": "1778252280000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532329"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a10080c60f9fd0187cfd47a"
+    },
+    "usuario": "adrian.perez",
+    "nombre": "Adrián Pérez",
+    "dni": "58930041S",
+    "groupName": "Grupo C",
+    "perfilAsistencia": "regular",
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "minutosTotales": {
+      "$numberInt": "2084"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-04-27",
+        "minutos": {
+          "$numberInt": "139"
+        },
+        "entrada": "09:01",
+        "salida": "11:20",
+        "firstTs": {
+          "$numberLong": "1777294860000"
+        },
+        "lastTs": {
+          "$numberLong": "1777303200000"
+        }
+      },
+      {
+        "fecha": "2026-04-28",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "entrada": "09:07",
+        "salida": "11:57",
+        "firstTs": {
+          "$numberLong": "1777381620000"
+        },
+        "lastTs": {
+          "$numberLong": "1777391820000"
+        }
+      },
+      {
+        "fecha": "2026-04-29",
+        "minutos": {
+          "$numberInt": "157"
+        },
+        "entrada": "09:07",
+        "salida": "11:44",
+        "firstTs": {
+          "$numberLong": "1777468020000"
+        },
+        "lastTs": {
+          "$numberLong": "1777477440000"
+        }
+      },
+      {
+        "fecha": "2026-04-30",
+        "minutos": {
+          "$numberInt": "144"
+        },
+        "entrada": "09:01",
+        "salida": "11:25",
+        "firstTs": {
+          "$numberLong": "1777554060000"
+        },
+        "lastTs": {
+          "$numberLong": "1777562700000"
+        }
+      },
+      {
+        "fecha": "2026-05-06",
+        "minutos": {
+          "$numberInt": "143"
+        },
+        "entrada": "09:00",
+        "salida": "11:23",
+        "firstTs": {
+          "$numberLong": "1778072400000"
+        },
+        "lastTs": {
+          "$numberLong": "1778080980000"
+        }
+      },
+      {
+        "fecha": "2026-05-07",
+        "minutos": {
+          "$numberInt": "163"
+        },
+        "entrada": "09:24",
+        "salida": "12:07",
+        "firstTs": {
+          "$numberLong": "1778160240000"
+        },
+        "lastTs": {
+          "$numberLong": "1778170020000"
+        }
+      },
+      {
+        "fecha": "2026-05-08",
+        "minutos": {
+          "$numberInt": "165"
+        },
+        "entrada": "09:02",
+        "salida": "11:47",
+        "firstTs": {
+          "$numberLong": "1778245320000"
+        },
+        "lastTs": {
+          "$numberLong": "1778255220000"
+        }
+      },
+      {
+        "fecha": "2026-05-11",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:04",
+        "salida": "11:25",
+        "firstTs": {
+          "$numberLong": "1778504640000"
+        },
+        "lastTs": {
+          "$numberLong": "1778513100000"
+        }
+      },
+      {
+        "fecha": "2026-05-12",
+        "minutos": {
+          "$numberInt": "169"
+        },
+        "entrada": "09:03",
+        "salida": "11:52",
+        "firstTs": {
+          "$numberLong": "1778590980000"
+        },
+        "lastTs": {
+          "$numberLong": "1778601120000"
+        }
+      },
+      {
+        "fecha": "2026-05-15",
+        "minutos": {
+          "$numberInt": "132"
+        },
+        "entrada": "09:02",
+        "salida": "11:14",
+        "firstTs": {
+          "$numberLong": "1778850120000"
+        },
+        "lastTs": {
+          "$numberLong": "1778858040000"
+        }
+      },
+      {
+        "fecha": "2026-05-18",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:06",
+        "salida": "11:27",
+        "firstTs": {
+          "$numberLong": "1779109560000"
+        },
+        "lastTs": {
+          "$numberLong": "1779118020000"
+        }
+      },
+      {
+        "fecha": "2026-05-20",
+        "minutos": {
+          "$numberInt": "141"
+        },
+        "entrada": "09:07",
+        "salida": "11:28",
+        "firstTs": {
+          "$numberLong": "1779282420000"
+        },
+        "lastTs": {
+          "$numberLong": "1779290880000"
+        }
+      },
+      {
+        "fecha": "2026-05-21",
+        "minutos": {
+          "$numberInt": "133"
+        },
+        "entrada": "09:03",
+        "salida": "11:16",
+        "firstTs": {
+          "$numberLong": "1779368580000"
+        },
+        "lastTs": {
+          "$numberLong": "1779376560000"
+        }
+      },
+      {
+        "fecha": "2026-05-22",
+        "minutos": {
+          "$numberInt": "146"
+        },
+        "entrada": "09:04",
+        "salida": "11:30",
+        "firstTs": {
+          "$numberLong": "1779455040000"
+        },
+        "lastTs": {
+          "$numberLong": "1779463800000"
+        }
+      }
+    ],
+    "ausenciasJustificadas": [
+      {
+        "fecha": "2026-05-14",
+        "motivo": "Gestión administrativa oficial"
+      }
+    ],
+    "isDemo": true,
+    "source": "manual_pdf_seed_v3",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779435532329"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf65"
+    },
+    "usuario": "tutortecmadrid",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf66"
+    },
+    "usuario": "654712294",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-21",
+        "minutos": {
+          "$numberInt": "0"
+        },
+        "firstTs": {
+          "$numberLong": "1774061820000"
+        },
+        "lastTs": {
+          "$numberLong": "1774072020000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf67"
+    },
+    "usuario": "604148364",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-17",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773776100000"
+        },
+        "lastTs": {
+          "$numberLong": "1773786300000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf68"
+    },
+    "usuario": "604974567",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-12",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773324120000"
+        },
+        "lastTs": {
+          "$numberLong": "1773334320000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf69"
+    },
+    "usuario": "605822546",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-18",
+        "minutos": {
+          "$numberInt": "0"
+        },
+        "firstTs": {
+          "$numberLong": "1773805800000"
+        },
+        "lastTs": {
+          "$numberLong": "1773816000000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6a"
+    },
+    "usuario": "641290677",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-15",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773594000000"
+        },
+        "lastTs": {
+          "$numberLong": "1773604200000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6b"
+    },
+    "usuario": "620736486",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-02-11",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1770837780000"
+        },
+        "lastTs": {
+          "$numberLong": "1770847980000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6c"
+    },
+    "usuario": "679073886",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-10",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773150660000"
+        },
+        "lastTs": {
+          "$numberLong": "1773160860000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6d"
+    },
+    "usuario": "641863735",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-06",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1772810220000"
+        },
+        "lastTs": {
+          "$numberLong": "1772820420000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6e"
+    },
+    "usuario": "634187704",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-09",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773015360000"
+        },
+        "lastTs": {
+          "$numberLong": "1773025560000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf6f"
+    },
+    "usuario": "624395960",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf70"
+    },
+    "usuario": "614383047",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-18",
+        "minutos": {
+          "$numberInt": "0"
+        },
+        "firstTs": {
+          "$numberLong": "1773800700000"
+        },
+        "lastTs": {
+          "$numberLong": "1773810900000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf71"
+    },
+    "usuario": "673923760",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf72"
+    },
+    "usuario": "604984149",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-02-11",
+        "minutos": {
+          "$numberInt": "0"
+        },
+        "firstTs": {
+          "$numberLong": "1770774600000"
+        },
+        "lastTs": {
+          "$numberLong": "1770784800000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf73"
+    },
+    "usuario": "664292560",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf74"
+    },
+    "usuario": "624159028",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-18",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773792180000"
+        },
+        "lastTs": {
+          "$numberLong": "1773802380000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf75"
+    },
+    "usuario": "617671170",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "0"
+    },
+    "diasDetalle": [],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1015cee42f8c102e56cf76"
+    },
+    "usuario": "614717655",
+    "groupName": "Sin Grupo",
+    "minutosTotales": {
+      "$numberInt": "170"
+    },
+    "diasDetalle": [
+      {
+        "fecha": "2026-03-17",
+        "minutos": {
+          "$numberInt": "170"
+        },
+        "firstTs": {
+          "$numberLong": "1773778800000"
+        },
+        "lastTs": {
+          "$numberLong": "1773789000000"
+        }
+      }
+    ],
+    "courseId": "24",
+    "courseShortname": "26EMHA06INGLÉS",
+    "fechaProceso": {
+      "$date": {
+        "$numberLong": "1779439054850"
+      }
+    }
+  }
+]

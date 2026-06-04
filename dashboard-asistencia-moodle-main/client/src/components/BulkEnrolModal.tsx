@@ -45,7 +45,7 @@ export function BulkEnrolModal({ show, onHide, destCourse }: BulkEnrolModalProps
 
     // Load courses when modal opens
     useEffect(() => {
-        if (show) {
+        if (show && destCourse) {
             setStep(1);
             setSourceCourseId('');
             setSearchTerm('');
@@ -57,14 +57,16 @@ export function BulkEnrolModal({ show, onHide, destCourse }: BulkEnrolModalProps
             setError('');
             setSendWelcome(true);
             setWelcomeResult('');
-            loadMoodleCourses();
+            loadMoodleCourses(destCourse.courseId);
         }
-    }, [show]);
+    }, [show, destCourse]);
 
-    const loadMoodleCourses = async () => {
+    const loadMoodleCourses = async (contextCourseId: number) => {
         setLoadingCourses(true);
         try {
-            const res = await axios.get('/api/moodle/courses');
+            const res = await axios.get('/api/moodle/courses', {
+                params: { courseId: contextCourseId }
+            });
             if (res.data.ok) {
                 setMoodleCourses(res.data.courses);
             }
@@ -83,8 +85,12 @@ export function BulkEnrolModal({ show, onHide, destCourse }: BulkEnrolModalProps
         try {
             // Cargar alumnos del curso origen Y del curso destino en paralelo
             const [sourceRes, destRes] = await Promise.all([
-                axios.get(`/api/moodle/enrolled-users/${sourceCourseId}`),
-                axios.get(`/api/moodle/enrolled-users/${destCourse.courseId}`)
+                axios.get(`/api/moodle/enrolled-users/${sourceCourseId}`, {
+                    params: { contextCourseId: destCourse.courseId }
+                }),
+                axios.get(`/api/moodle/enrolled-users/${destCourse.courseId}`, {
+                    params: { contextCourseId: destCourse.courseId }
+                })
             ]);
 
             if (sourceRes.data.ok) {

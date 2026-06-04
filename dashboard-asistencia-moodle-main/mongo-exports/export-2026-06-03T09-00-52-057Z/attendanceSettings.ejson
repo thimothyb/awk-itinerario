@@ -1,0 +1,248 @@
+[
+  {
+    "_id": {
+      "$oid": "699c61855025334819a8fb10"
+    },
+    "courseId": "5",
+    "groupId": "1",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1771856261009"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1782835200000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "Aprovechamiento",
+    "holidays": [
+      "2026-02-26",
+      "2026-03-11"
+    ],
+    "minMinutesPerDay": {
+      "$numberInt": "170"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 14:00",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1771862400000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1771856298729"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "699c6c045025334819a8fb16"
+    },
+    "courseId": "6",
+    "groupId": "5",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1771858948797"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1780156800000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "SENCE-6658659",
+    "holidays": [
+      "2026-03-24",
+      "2026-04-21",
+      "2026-04-23",
+      "2026-05-08",
+      "2026-05-13"
+    ],
+    "minMinutesPerDay": {
+      "$numberInt": "300"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 14:00",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1771862400000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1771860678316"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "699c73025025334819a8fb17"
+    },
+    "courseId": "6",
+    "groupId": "4",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1771860738570"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1774713600000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "BECADO",
+    "holidays": [],
+    "minMinutesPerDay": {
+      "$numberInt": "170"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 14:00",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1772294400000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1771860738570"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1005414a6e4e98f8fe3c99"
+    },
+    "groupId": "Grupo A",
+    "courseId": "24",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1779434817875"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1779465600000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "Grupo A",
+    "holidays": [
+      "2026-05-04",
+      "2026-05-13"
+    ],
+    "isDemo": true,
+    "minMinutesPerDay": {
+      "$numberInt": "170"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 12:30",
+    "source": "manual_pdf_seed_v3",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1777305600000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1779435532360"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1005414a6e4e98f8fe3c9a"
+    },
+    "courseId": "24",
+    "groupId": "Grupo B",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1779434817875"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1779465600000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "Grupo B",
+    "holidays": [
+      "2026-05-04",
+      "2026-05-13"
+    ],
+    "isDemo": true,
+    "minMinutesPerDay": {
+      "$numberInt": "170"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 12:30",
+    "source": "manual_pdf_seed_v3",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1777305600000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1779435532360"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6a1005414a6e4e98f8fe3c9b"
+    },
+    "groupId": "Grupo C",
+    "courseId": "24",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1779434817875"
+      }
+    },
+    "endDate": {
+      "$date": {
+        "$numberLong": "1779465600000"
+      }
+    },
+    "globalAttendancePercent": {
+      "$numberInt": "80"
+    },
+    "groupName": "Grupo C",
+    "holidays": [
+      "2026-05-04",
+      "2026-05-13"
+    ],
+    "isDemo": true,
+    "minMinutesPerDay": {
+      "$numberInt": "170"
+    },
+    "schedule": [],
+    "scheduleTime": "09:00 - 12:30",
+    "source": "manual_pdf_seed_v3",
+    "startDate": {
+      "$date": {
+        "$numberLong": "1777305600000"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1779435532360"
+      }
+    }
+  }
+]
