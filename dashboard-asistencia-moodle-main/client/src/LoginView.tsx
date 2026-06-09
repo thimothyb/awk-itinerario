@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import axios from 'axios';
 import { Card, Form, Button, Spinner, Alert, Container } from 'react-bootstrap';
 
@@ -27,7 +27,7 @@ export function LoginView({ onLoginSuccess }: LoginViewProps) {
                 localStorage.setItem('app_user', JSON.stringify(res.data.user));
                 onLoginSuccess(res.data.user);
             } else {
-                setError(res.data.error || 'Error de autenticación');
+                setError(res.data.error || 'Error de autenticaciÃ³n');
             }
         } catch (err: any) {
             setError(err.response?.data?.error || 'Error al conectar con el servidor');
@@ -51,7 +51,7 @@ export function LoginView({ onLoginSuccess }: LoginViewProps) {
                             <div className="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px', fontSize: '24px' }}>
                                 <i className="fa-solid fa-user-lock"></i>
                             </div>
-                            <h4 className="fw-bold text-dark">Iniciar Sesión</h4>
+                            <h4 className="fw-bold text-dark">Iniciar SesiÃ³n</h4>
                             <p className="text-muted small">Control de Asistencia</p>
                         </div>
 
@@ -70,10 +70,10 @@ export function LoginView({ onLoginSuccess }: LoginViewProps) {
                             </Form.Group>
 
                             <Form.Group className="mb-4">
-                                <Form.Label className="small fw-bold text-secondary">Contraseña</Form.Label>
+                                <Form.Label className="small fw-bold text-secondary">ContraseÃ±a</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    placeholder="••••••"
+                                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                 />
@@ -85,7 +85,7 @@ export function LoginView({ onLoginSuccess }: LoginViewProps) {
                         </Form>
                     </Card.Body>
                     <Card.Footer className="text-center bg-light border-0 py-3">
-                        <small className="text-muted">© 2026 Formación Técnica S.A.</small>
+                        <small className="text-muted">&copy; 2026 Powered by Awakelab.</small>
                     </Card.Footer>
                 </Card>
             </Container>
