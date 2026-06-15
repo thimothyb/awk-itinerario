@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Button, Modal, Form, Badge, Row, Col, Spinner, Alert, Table } from 'react-bootstrap';
 import { BulkEnrolModal } from './BulkEnrolModal';
 import { ConditionalEnrolModal } from './ConditionalEnrolModal';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, rectSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // --- INTERFACES ---
 interface RegisteredCourse {
@@ -43,6 +47,26 @@ const normalizeImageUrl = (url: string | undefined): string | undefined => {
     return url;
 };
 
+function SortableCard({ id, children }: { id: number; children: React.ReactNode }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+    return (
+        <div
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            style={{
+                transform: CSS.Transform.toString(transform),
+                transition,
+                opacity: isDragging ? 0.4 : 1,
+                cursor: isDragging ? 'grabbing' : 'grab',
+                touchAction: 'none',
+            }}
+        >
+            {children}
+        </div>
+    );
+}
+
 export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any) => void }) {
     // ESTADOS PRINCIPALES
     const [courses, setCourses] = useState<RegisteredCourse[]>([]);
@@ -58,6 +82,43 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
 
     // ESTADO SINCRONIZACIÓN
     const [syncingId, setSyncingId] = useState<number | null>(null);
+
+    // ESTADO ORDENAMIENTO
+    const [syncingOrder, setSyncingOrder] = useState(false);
+    const [showSyncOrderModal, setShowSyncOrderModal] = useState(false);
+    const [parentCourseIdInput, setParentCourseIdInput] = useState('681');
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+        const oldIndex = courses.findIndex(c => c.courseId === active.id);
+        const newIndex = courses.findIndex(c => c.courseId === over.id);
+        const reordered = arrayMove(courses, oldIndex, newIndex);
+        setCourses(reordered);
+        await axios.put('/api/courses/order', { order: reordered.map(c => c.courseId) });
+    };
+
+    const handleSyncOrderFromMoodle = async () => {
+        if (!parentCourseIdInput) return;
+        setSyncingOrder(true);
+        try {
+            const res = await axios.post('/api/courses/sync-order-from-moodle', {
+                parentCourseId: Number(parentCourseIdInput)
+            });
+            if (res.data.ok) {
+                alert(`✅ ${res.data.message}`);
+                loadCourses();
+                setShowSyncOrderModal(false);
+            } else {
+                alert(`❌ ${res.data.error}`);
+            }
+        } catch (e: any) {
+            alert(`❌ ${e.response?.data?.error || e.message}`);
+        } finally {
+            setSyncingOrder(false);
+        }
+    };
 
     // GESTOR DE GRUPOS 
     const [showGroupsListModal, setShowGroupsListModal] = useState(false);
@@ -430,8 +491,18 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
     return (
         <div className="container-fluid p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 className="fw-bold text-dark m-0">Mis Cursos</h2>
-                <Badge bg="secondary" className="fs-6">{courses.length} Cursos Activos</Badge>
+                <div>
+                    <h2 className="fw-bold text-dark m-0">Mis Cursos</h2>
+                    <small className="text-muted" style={{ fontSize: '0.75rem' }}>
+                        <i className="fa-solid fa-grip-dots me-1"></i>Arrastra las tarjetas para reordenar
+                    </small>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                    <Button variant="outline-secondary" size="sm" onClick={() => setShowSyncOrderModal(true)} title="Sincronizar orden desde Moodle">
+                        <i className="fa-solid fa-arrow-down-up-across-line me-1"></i>Orden desde Moodle
+                    </Button>
+                    <Badge bg="secondary" className="fs-6">{courses.length} Cursos Activos</Badge>
+                </div>
             </div>
 
             {courses.length === 0 ? (
@@ -440,10 +511,13 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                     <p>No tienes cursos registrados. ¡Agrega el primero!</p>
                 </div>
             ) : (
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={courses.map(c => c.courseId)} strategy={rectSortingStrategy}>
                 <Row xs={1} md={2} lg={3} xl={4} className="g-4">
                     {courses.map(c => (
                         <Col key={c.courseId}>
-                            <Card className="h-100 shadow-sm border-0 card-hover" onClick={() => handleCardClick(c)} style={{ cursor: 'pointer' }}>
+                        <SortableCard id={c.courseId}>
+                        <Card className="h-100 shadow-sm border-0 card-hover" style={{ cursor: 'inherit' }}>
                                 {/* PORTADA */}
                                 <div style={{ height: '160px', position: 'relative', backgroundColor: '#f3f4f6' }}>
                                     <div id={`fallback-${c.courseId}`} style={{ height: '100%', background: '#2563eb', color: 'white', display: c.imageUrl ? 'none' : 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '2rem', fontWeight: 'bold' }}>
@@ -475,7 +549,7 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                                     )}
                                 </div>
 
-                                <Card.Body className="d-flex flex-column pt-3">
+                                <Card.Body className="d-flex flex-column pt-3" onClick={() => handleCardClick(c)} style={{ cursor: 'pointer' }}>
                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                         <div className="text-truncate" style={{ maxWidth: '65%' }} title={c.shortname}>
                                             <Badge bg="primary" style={{ fontWeight: 500, fontSize: '0.9rem' }}>
@@ -520,10 +594,42 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                                     </div>
                                 </Card.Body>
                             </Card>
+                        </SortableCard>
                         </Col>
+
                     ))}
                 </Row>
+                </SortableContext>
+                </DndContext>
             )}
+
+            {/* MODAL SINCRONIZAR ORDEN DESDE MOODLE */}
+            <Modal show={showSyncOrderModal} onHide={() => setShowSyncOrderModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title><i className="fa-solid fa-arrow-down-up-across-line me-2"></i>Sincronizar orden desde Moodle</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Alert variant="info" className="small">
+                        El servidor leerá las secciones del curso padre e intentará encontrar enlaces a los cursos registrados. El orden de las tarjetas seguirá el orden de las secciones en Moodle.
+                    </Alert>
+                    <Form.Group>
+                        <Form.Label className="fw-bold">ID del curso padre (itinerario)</Form.Label>
+                        <Form.Control
+                            type="number"
+                            value={parentCourseIdInput}
+                            onChange={e => setParentCourseIdInput(e.target.value)}
+                            placeholder="ej: 681"
+                        />
+                        <Form.Text className="text-muted">El ID del curso en Moodle que contiene los enlaces al resto de cursos.</Form.Text>
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowSyncOrderModal(false)}>Cancelar</Button>
+                    <Button variant="primary" onClick={handleSyncOrderFromMoodle} disabled={syncingOrder}>
+                        {syncingOrder ? <><Spinner size="sm" className="me-1" />Sincronizando...</> : <><i className="fa-solid fa-rotate me-1"></i>Sincronizar</>}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
             {/* BOTÓN FLOTANTE (+) */}
             <button

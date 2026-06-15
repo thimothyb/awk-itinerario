@@ -1706,7 +1706,7 @@ app.post('/api/courses/register', async (req: any, res: any) => {
 app.get('/api/courses/list', async (req: any, res: any) => {
   try {
     const db = await connectDB();
-    const list = await db.collection('registeredCourses').find().toArray();
+    const list = await db.collection('registeredCourses').find().sort({ sortOrder: 1 }).toArray();
 
     const conFoto = list.filter(c => c.imageUrl).length;
     console.log(`📂 Enviando ${list.length} cursos al Dashboard (${conFoto} con foto)`);
@@ -1748,6 +1748,123 @@ app.put('/api/courses/settings', async (req: any, res: any) => {
   } catch (err) {
     console.error("Error actualizando config:", err);
     res.status(500).json({ ok: false, error: 'Error del servidor' });
+  }
+});
+
+// Guarda el orden de las tarjetas (array de courseIds en el orden deseado)
+app.put('/api/courses/order', async (req: any, res: any) => {
+  try {
+    const { order } = req.body; // [courseId1, courseId2, ...]
+    if (!Array.isArray(order)) return res.status(400).json({ ok: false, error: 'order debe ser un array' });
+
+    const db = await connectDB();
+    const col = db.collection('registeredCourses');
+    await Promise.all(order.map((courseId: number, index: number) =>
+      col.updateOne({ courseId: Number(courseId) }, { $set: { sortOrder: index } })
+    ));
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Error guardando orden:', err);
+    res.status(500).json({ ok: false, error: 'Error del servidor' });
+  }
+});
+
+// Sincroniza el orden leyendo las secciones del curso padre en Moodle
+app.post('/api/courses/sync-order-from-moodle', async (req: any, res: any) => {
+  try {
+    const { parentCourseId } = req.body;
+    if (!parentCourseId) return res.status(400).json({ ok: false, error: 'Falta parentCourseId' });
+
+    const db = await connectDB();
+    const col = db.collection('registeredCourses');
+
+    // Tomar moodleUrl y token de cualquier curso registrado
+    const anyCourse = await col.findOne({});
+    if (!anyCourse) return res.status(404).json({ ok: false, error: 'No hay cursos registrados' });
+
+    const { moodleUrl, moodleToken } = anyCourse;
+
+    const resp = await axios.get(`${moodleUrl}/webservice/rest/server.php`, {
+      params: {
+        wstoken: moodleToken,
+        wsfunction: 'core_course_get_contents',
+        moodlewsrestformat: 'json',
+        courseid: Number(parentCourseId)
+      },
+      timeout: 15000
+    });
+
+    if (!Array.isArray(resp.data)) {
+      const err = resp.data?.errorcode || resp.data?.error || 'Respuesta inesperada';
+      return res.status(502).json({ ok: false, error: `Error de Moodle: ${err}` });
+    }
+
+    const registered = await col.find({}).toArray();
+
+    // Normaliza un texto para comparación: minúsculas, sin espacios extra, sin tabulaciones
+    const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
+
+    // Extrae nombres de módulos subcourse en orden de sección (el curso padre usa el plugin subcourse)
+    // Estrategia de emparejamiento:
+    //   1. shortname exacto al inicio del nombre del módulo  (ej: "FCOS02 BÁSICO...")
+    //   2. fullname normalizado contiene al nombre del módulo normalizado o viceversa
+    const orderedCourseIds: number[] = [];
+    const log: string[] = [];
+
+    for (const section of resp.data) {
+      for (const mod of (section.modules || [])) {
+        const modNameNorm = normalize(mod.name || '');
+        if (!modNameNorm) continue;
+
+        // Buscar el curso registrado que mejor coincide con este módulo
+        let matched = registered.find(r => {
+          // Coincidencia por shortname al inicio del nombre del módulo
+          const sn = normalize(r.shortname || '');
+          if (sn && modNameNorm.startsWith(sn)) return true;
+          // Coincidencia por fullname normalizado
+          const fn = normalize(r.fullname || '');
+          if (fn && (modNameNorm.includes(fn) || fn.includes(modNameNorm))) return true;
+          return false;
+        });
+
+        if (matched && !orderedCourseIds.includes(matched.courseId)) {
+          orderedCourseIds.push(matched.courseId);
+          log.push(`Sección ${section.section} [${mod.modname}] "${mod.name}" → courseId:${matched.courseId} (${matched.shortname})`);
+        } else if (!matched) {
+          log.push(`Sección ${section.section} [${mod.modname}] "${mod.name}" → SIN COINCIDENCIA`);
+        }
+      }
+    }
+
+    console.log('=== Sync orden desde Moodle ===\n' + log.join('\n'));
+
+    if (orderedCourseIds.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        error: 'No se encontraron coincidencias entre los módulos del curso padre y los cursos registrados.'
+      });
+    }
+
+    // Aplicar sortOrder a los cursos encontrados
+    let applied = 0;
+    for (let i = 0; i < orderedCourseIds.length; i++) {
+      const result = await col.updateOne(
+        { courseId: orderedCourseIds[i] },
+        { $set: { sortOrder: i } }
+      );
+      if (result.matchedCount > 0) applied++;
+    }
+
+    // Cursos registrados no presentes en el padre van al final
+    const remaining = registered.filter(r => !orderedCourseIds.includes(r.courseId));
+    for (let i = 0; i < remaining.length; i++) {
+      await col.updateOne({ courseId: remaining[i].courseId }, { $set: { sortOrder: orderedCourseIds.length + i } });
+    }
+
+    res.json({ ok: true, orderedCourseIds, applied, log, message: `${applied} cursos reordenados desde Moodle` });
+  } catch (err: any) {
+    console.error('Error sincronizando orden desde Moodle:', err);
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 
