@@ -34,6 +34,15 @@ interface GroupSetting {
     holidays?: string[];
 }
 
+const normalizeImageUrl = (url: string | undefined): string | undefined => {
+    if (!url) return undefined;
+    try {
+        const u = new URL(url);
+        if (u.pathname.startsWith('/api/proxy-img')) return u.pathname + u.search;
+    } catch {}
+    return url;
+};
+
 export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any) => void }) {
     // ESTADOS PRINCIPALES
     const [courses, setCourses] = useState<RegisteredCourse[]>([]);
@@ -437,17 +446,20 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                             <Card className="h-100 shadow-sm border-0 card-hover" onClick={() => handleCardClick(c)} style={{ cursor: 'pointer' }}>
                                 {/* PORTADA */}
                                 <div style={{ height: '160px', position: 'relative', backgroundColor: '#f3f4f6' }}>
-                                {c.imageUrl ? (
+                                    <div id={`fallback-${c.courseId}`} style={{ height: '100%', background: '#2563eb', color: 'white', display: c.imageUrl ? 'none' : 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '2rem', fontWeight: 'bold' }}>
+                                        {c.shortname.substring(0, 2).toUpperCase()}
+                                    </div>
+                                    {c.imageUrl && (
                                         <Card.Img
                                             variant="top"
-                                            src={c.imageUrl}
-                                            style={{ height: '100%', objectFit: 'cover' }}
-                                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                            src={normalizeImageUrl(c.imageUrl)}
+                                            style={{ height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, width: '100%' }}
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
+                                                const fb = document.getElementById(`fallback-${c.courseId}`);
+                                                if (fb) fb.style.display = 'flex';
+                                            }}
                                         />
-                                    ) : (
-                                        <div style={{ height: '100%', background: '#2563eb', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '2rem', fontWeight: 'bold' }}>
-                                            {c.shortname.substring(0, 2).toUpperCase()}
-                                        </div>
                                     )}
                                     <Badge bg="dark" className="shadow-sm" style={{ position: 'absolute', top: '10px', right: '10px', opacity: 0.8 }}>ID: {c.courseId}</Badge>
 

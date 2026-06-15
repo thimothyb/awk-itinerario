@@ -1592,45 +1592,80 @@ app.post('/api/courses/register', async (req: any, res: any) => {
 
     let finalImageUrl = null;
 
-    // Buscar en overviewfiles
-    if (moodleCourse.overviewfiles && moodleCourse.overviewfiles.length > 0) {
-      const file = moodleCourse.overviewfiles[0];
-      let fileurl = file.fileurl;
-
-      // Solo reemplazamos si no tiene ya el prefijo /webservice/
+    // Normaliza una URL de archivo de Moodle: usa /webservice/pluginfile.php y agrega el token
+    const buildMoodleFileUrl = (rawUrl: string): string => {
+      let fileurl = rawUrl;
       if (fileurl.includes('/pluginfile.php') && !fileurl.includes('/webservice/pluginfile.php')) {
         fileurl = fileurl.replace('/pluginfile.php', '/webservice/pluginfile.php');
       }
+      if (!fileurl.includes('token=')) {
+        const symbol = fileurl.includes('?') ? '&' : '?';
+        fileurl += `${symbol}token=${moodleToken}`;
+      }
+      return fileurl;
+    };
 
-      const symbol = fileurl.includes('?') ? '&' : '?';
-      finalImageUrl = `${fileurl}${symbol}token=${moodleToken}`;
-
-      console.log("📸 FOTO GENERADA:", finalImageUrl);
+    // Plan A: imagen oficial subida al curso (overviewfiles)
+    if (moodleCourse.overviewfiles && moodleCourse.overviewfiles.length > 0) {
+      finalImageUrl = buildMoodleFileUrl(moodleCourse.overviewfiles[0].fileurl);
+      console.log("📸 FOTO DESDE overviewfiles:", finalImageUrl);
     }
 
-    // Buscar imagen incrustada en el HTML del resumen (Plan B)
+    // Plan B: imagen incrustada en el HTML del resumen del curso
     else if (moodleCourse.summary && moodleCourse.summary.includes('<img')) {
       const match = moodleCourse.summary.match(/src="([^"]+)"/);
       if (match) {
-        let fileurl = match[1];
-        if (fileurl.includes('/pluginfile.php') && !fileurl.includes('/webservice/pluginfile.php')) {
-          fileurl = fileurl.replace('/pluginfile.php', '/webservice/pluginfile.php');
-        }
-
-        finalImageUrl = fileurl;
-        if (!finalImageUrl.includes('token=')) {
-          const symbol = finalImageUrl.includes('?') ? '&' : '?';
-          finalImageUrl += `${symbol}token=${moodleToken}`;
-        }
+        finalImageUrl = buildMoodleFileUrl(match[1]);
         console.log("📸 FOTO ENCONTRADA EN RESUMEN (HTML)");
       }
-    } else {
+    }
+
+    // Plan C: foto incrustada en el contenido del curso (banner de la sección).
+    // Requiere que el usuario del token tenga acceso al curso; si no, lanza accessexception.
+    if (!finalImageUrl) {
+      try {
+        const contentResp = await axios.get(`${moodleUrl}/webservice/rest/server.php`, {
+          params: {
+            wstoken: moodleToken,
+            wsfunction: 'core_course_get_contents',
+            moodlewsrestformat: 'json',
+            courseid: Number(courseId)
+          }
+        });
+        const sections = Array.isArray(contentResp.data) ? contentResp.data : [];
+        outer:
+        for (const sec of sections) {
+          const htmlBlocks = [sec.summary, ...(sec.modules || []).map((m: any) => m.description)];
+          for (const html of htmlBlocks) {
+            if (html && html.includes('<img')) {
+              const m = html.match(/src="([^"]+)"/);
+              if (m && /\.(png|jpe?g|gif|webp|svg)/i.test(m[1])) {
+                finalImageUrl = buildMoodleFileUrl(m[1]);
+                console.log("📸 FOTO ENCONTRADA EN CONTENIDO DEL CURSO");
+                break outer;
+              }
+            }
+          }
+        }
+      } catch (contentErr: any) {
+        const reason = contentErr.response?.data?.errorcode || contentErr.message;
+        console.log(`⚠️ No se pudo leer el contenido del curso (${reason}).`);
+      }
+    }
+
+    // Plan D: imagen que genera Moodle (patrón de colores) como último recurso
+    if (!finalImageUrl && moodleCourse.courseimage) {
+      finalImageUrl = buildMoodleFileUrl(moodleCourse.courseimage);
+      console.log("📸 FOTO GENERADA POR MOODLE (courseimage):", finalImageUrl);
+    }
+
+    if (!finalImageUrl) {
       console.log("⚠️ No se encontró foto para este curso.");
     }
 
-    // Si se encontró imagen, la pasamos por el proxy local para evitar problemas de CORS/Sesión
+    // Usamos ruta relativa para que funcione en dev (Vite proxy) y producción
     if (finalImageUrl) {
-      finalImageUrl = `http://localhost:${PORT}/api/proxy-img?url=${encodeURIComponent(finalImageUrl)}`;
+      finalImageUrl = `/api/proxy-img?url=${encodeURIComponent(finalImageUrl)}`;
     }
 
     const db = await connectDB();
