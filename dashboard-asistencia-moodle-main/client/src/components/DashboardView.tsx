@@ -47,8 +47,9 @@ const normalizeImageUrl = (url: string | undefined): string | undefined => {
     return url;
 };
 
-function SortableCard({ id, children }: { id: number; children: React.ReactNode }) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+function SortableCard({ id, children, disabled }: { id: number; children: React.ReactNode; disabled?: boolean }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled });
+    if (disabled) return <div>{children}</div>;
     return (
         <div
             ref={setNodeRef}
@@ -67,7 +68,8 @@ function SortableCard({ id, children }: { id: number; children: React.ReactNode 
     );
 }
 
-export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any) => void }) {
+export function DashboardView({ onCourseSelect, role }: { onCourseSelect: (course: any) => void; role?: string }) {
+    const isAdmin = role === 'admin';
     // ESTADOS PRINCIPALES
     const [courses, setCourses] = useState<RegisteredCourse[]>([]);
 
@@ -349,6 +351,14 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
         } catch (error) { console.error("Error cargando grupos", error); }
     };
 
+    const handleDeleteGroup = async (grp: GroupSetting) => {
+        if (!window.confirm(`¿Eliminar la configuración del grupo "${grp.groupName || grp.groupId}"?`)) return;
+        try {
+            await axios.delete(`/api/attendance-settings/${grp.courseId}/${grp.groupId}`);
+            loadConfiguredGroups(Number(grp.courseId));
+        } catch (error) { console.error("Error eliminando grupo", error); }
+    };
+
     const handleOpenConfigModal = async (groupSetting: GroupSetting | null) => {
         if (!selectedCourseForGroups) return;
 
@@ -493,14 +503,18 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 className="fw-bold text-dark m-0">Mis Cursos</h2>
-                    <small className="text-muted" style={{ fontSize: '0.75rem' }}>
-                        <i className="fa-solid fa-grip-dots me-1"></i>Arrastra las tarjetas para reordenar
-                    </small>
+                    {isAdmin && (
+                        <small className="text-muted" style={{ fontSize: '0.75rem' }}>
+                            <i className="fa-solid fa-grip-dots me-1"></i>Arrastra las tarjetas para reordenar
+                        </small>
+                    )}
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                    <Button variant="outline-secondary" size="sm" onClick={() => setShowSyncOrderModal(true)} title="Sincronizar orden desde Moodle">
-                        <i className="fa-solid fa-arrow-down-up-across-line me-1"></i>Orden desde Moodle
-                    </Button>
+                    {isAdmin && (
+                        <Button variant="outline-secondary" size="sm" onClick={() => setShowSyncOrderModal(true)} title="Sincronizar orden desde Moodle">
+                            <i className="fa-solid fa-arrow-down-up-across-line me-1"></i>Orden desde Moodle
+                        </Button>
+                    )}
                     <Badge bg="secondary" className="fs-6">{courses.length} Cursos Activos</Badge>
                 </div>
             </div>
@@ -512,11 +526,11 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                 </div>
             ) : (
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={courses.map(c => c.courseId)} strategy={rectSortingStrategy}>
+                <SortableContext items={isAdmin ? courses.map(c => c.courseId) : []} strategy={rectSortingStrategy}>
                 <Row xs={1} md={2} lg={3} xl={4} className="g-4">
                     {courses.map(c => (
                         <Col key={c.courseId}>
-                        <SortableCard id={c.courseId}>
+                        <SortableCard id={c.courseId} disabled={!isAdmin}>
                         <Card className="h-100 shadow-sm border-0 card-hover" style={{ cursor: 'inherit' }}>
                                 {/* PORTADA */}
                                 <div style={{ height: '160px', position: 'relative', backgroundColor: '#f3f4f6' }}>
@@ -631,14 +645,16 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                 </Modal.Footer>
             </Modal>
 
-            {/* BOTÓN FLOTANTE (+) */}
-            <button
-                className="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center"
-                style={{ position: 'fixed', bottom: '30px', right: '30px', width: '60px', height: '60px', fontSize: '24px', zIndex: 100, border: '4px solid white' }}
-                onClick={() => setShowAddModal(true)}
-            >
-                <i className="fa-solid fa-plus"></i>
-            </button>
+            {/* BOTÓN FLOTANTE (+) — solo admin */}
+            {isAdmin && (
+                <button
+                    className="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center"
+                    style={{ position: 'fixed', bottom: '30px', right: '30px', width: '60px', height: '60px', fontSize: '24px', zIndex: 100, border: '4px solid white' }}
+                    onClick={() => setShowAddModal(true)}
+                >
+                    <i className="fa-solid fa-plus"></i>
+                </button>
+            )}
 
             {/* MODAL AGREGAR CURSO */}
             <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered backdrop="static">
@@ -723,8 +739,11 @@ export function DashboardView({ onCourseSelect }: { onCourseSelect: (course: any
                                         <td>{grp.startDate ? new Date(grp.startDate).toLocaleDateString() : '-'}</td>
                                         <td>{grp.endDate ? new Date(grp.endDate).toLocaleDateString() : '-'}</td>
                                         <td className="text-center">
-                                            <Button variant="outline-primary" size="sm" onClick={() => handleOpenConfigModal(grp)}>
+                                            <Button variant="outline-primary" size="sm" className="me-2" onClick={() => handleOpenConfigModal(grp)}>
                                                 <i className="fa-solid fa-gear"></i>
+                                            </Button>
+                                            <Button variant="outline-danger" size="sm" onClick={() => handleDeleteGroup(grp)}>
+                                                <i className="fa-solid fa-trash"></i>
                                             </Button>
                                         </td>
                                     </tr>

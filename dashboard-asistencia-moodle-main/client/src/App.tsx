@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Navbar } from 'react-bootstrap'; 
 import { ReportesView } from './components/ReportesView';
 import { DashboardView } from './components/DashboardView';
 import { LoginView } from './LoginView';
+import { UserManagementModal } from './components/UserManagementModal';
 import './styles-dashboard.css';
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
   // Estados de navegación
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currentView, setCurrentView] = useState<'dashboard' | 'reportes'>('dashboard');
+  const [showUserMgmt, setShowUserMgmt] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('app_user');
@@ -39,6 +40,11 @@ function App() {
         </span>
         <div className="d-flex align-items-center gap-3">
           <span className="text-white small">Hola, {user?.name}</span>
+          {user?.role === 'admin' && (
+            <button onClick={() => setShowUserMgmt(true)} className="btn btn-outline-light btn-sm">
+              <i className="fa-solid fa-users-gear me-2"></i>Usuarios
+            </button>
+          )}
           <button onClick={handleLogout} className="btn btn-outline-light btn-sm">
             <i className="fa-solid fa-right-from-bracket me-2"></i>Salir
           </button>
@@ -52,8 +58,15 @@ function App() {
             setSelectedCourse(course);
             setCurrentView('reportes');
           }}
+          role={user?.role}
         />
       )}
+
+      <UserManagementModal
+        show={showUserMgmt}
+        onHide={() => setShowUserMgmt(false)}
+        currentUsername={user?.username}
+      />
 
       {currentView === 'reportes' && selectedCourse && (
         <ReportesView

@@ -1884,6 +1884,27 @@ app.get('/api/attendance-settings/all/:courseId', async (req: any, res: any) => 
   }
 });
 
+app.delete('/api/attendance-settings/:courseId/:groupId', async (req: any, res: any) => {
+  try {
+    const { courseId, groupId } = req.params;
+    if (!courseId || !groupId) {
+      return res.status(400).json({ ok: false, error: 'courseId y groupId son requeridos' });
+    }
+    const db = await connectDB();
+    const result = await db.collection('attendanceSettings').deleteOne({
+      courseId: String(courseId).trim(),
+      groupId: String(groupId).trim(),
+    });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ ok: false, error: 'Configuración de grupo no encontrada' });
+    }
+    return res.json({ ok: true, message: 'Grupo eliminado correctamente' });
+  } catch (err: any) {
+    console.error('❌ Error en DELETE /api/attendance-settings:', err?.message || err);
+    return res.status(500).json({ ok: false, error: 'Error al eliminar grupo' });
+  }
+});
+
 app.delete('/api/courses/:courseId', async (req: any, res: any) => {
   try {
     const { courseId } = req.params;
@@ -2345,7 +2366,7 @@ app.post('/api/auth/login', async (req: any, res: any) => {
       // Login exitoso
       res.json({
         ok: true,
-        user: { username: user.username, name: user.name },
+        user: { username: user.username, name: user.name, role: user.role || 'viewer' },
         token: 'fake-jwt-token-123' // Simulación de token
       });
     } else {
@@ -2354,6 +2375,57 @@ app.post('/api/auth/login', async (req: any, res: any) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: 'Error del servidor' });
+  }
+});
+
+// --- GESTIÓN DE USUARIOS ---
+app.get('/api/auth/users', async (req: any, res: any) => {
+  try {
+    const db = await connectDB();
+    const users = await db.collection('users').find({}, { projection: { password: 0 } }).toArray();
+    res.json({ ok: true, users });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Error obteniendo usuarios' });
+  }
+});
+
+app.post('/api/auth/users', async (req: any, res: any) => {
+  try {
+    const { username, password, name, role } = req.body;
+    if (!username || !password || !name) {
+      return res.status(400).json({ ok: false, error: 'username, password y name son requeridos' });
+    }
+    const db = await connectDB();
+    const existing = await db.collection('users').findOne({ username });
+    if (existing) {
+      return res.status(409).json({ ok: false, error: 'El usuario ya existe' });
+    }
+    await db.collection('users').insertOne({
+      username,
+      password,
+      name,
+      role: role === 'admin' ? 'admin' : 'viewer'
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Error creando usuario' });
+  }
+});
+
+app.delete('/api/auth/users/:username', async (req: any, res: any) => {
+  try {
+    const { username } = req.params;
+    if (username === 'admin') {
+      return res.status(403).json({ ok: false, error: 'No se puede eliminar el usuario admin' });
+    }
+    const db = await connectDB();
+    const result = await db.collection('users').deleteOne({ username });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ ok: false, error: 'Usuario no encontrado' });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: 'Error eliminando usuario' });
   }
 });
 
@@ -2378,9 +2450,12 @@ async function initAdminUser() {
       await usersCol.insertOne({
         username: 'admin',
         password: 'password123',
-        name: 'Administrador'
+        name: 'Administrador',
+        role: 'admin'
       });
       console.log("✅ Usuario creado: admin / password123");
+    } else if (!admin.role) {
+      await usersCol.updateOne({ username: 'admin' }, { $set: { role: 'admin' } });
     }
   } catch (e) {
     console.error("Error init admin:", e);
