@@ -2528,6 +2528,82 @@ app.get('/api/ping', (req, res) => {
   res.json({ ok: true, message: 'pong (ANTIGRAVITY-1.1)', time: new Date().toISOString() });
 });
 
+// =============================================
+// DIAGNÓSTICO DE PERMISOS Y CONECTIVIDAD
+// GET /api/diagnostics/:courseId
+// Prueba todas las funciones WS que usa la app y reporta cuáles están habilitadas.
+// =============================================
+app.get('/api/diagnostics/:courseId', async (req: any, res: any) => {
+  const { courseId } = req.params;
+
+  const results: Record<string, { ok: boolean; detail: string }> = {};
+
+  let moodleConfig: any;
+  try {
+    const db = await connectDB();
+    moodleConfig = await getMoodleAccessConfig(db, String(courseId), { allowGlobalFallback: false });
+    results['config'] = { ok: true, detail: `Token y URL de Moodle resueltos para curso ${courseId}` };
+  } catch (e: any) {
+    return res.json({
+      ok: false,
+      summary: 'No se pudo obtener la configuración de Moodle para este curso.',
+      results: { config: { ok: false, detail: e.message } }
+    });
+  }
+
+  const probe = async (label: string, wsfunction: string, extraParams: Record<string, any> = {}) => {
+    try {
+      const resp = await axios.get(moodleConfig.wsUrl, {
+        params: { wstoken: moodleConfig.moodleToken, wsfunction, moodlewsrestformat: 'json', ...extraParams },
+        timeout: 8000
+      });
+      const data = resp.data;
+      if (data && data.exception) {
+        // "invalidparameter" → función existe pero recibió parámetros de prueba vacíos (ok)
+        if (data.errorcode === 'invalidparameter' || data.errorcode === 'missingparam') {
+          results[label] = { ok: true, detail: 'Función accesible (error de parámetros esperado en prueba)' };
+        } else if (data.errorcode === 'accessexception' || data.errorcode === 'nopermissions') {
+          results[label] = { ok: false, detail: `Sin permiso: ${data.message}` };
+        } else if (data.errorcode === 'invalidrecord' || data.errorcode === 'dml_missing_record_exception') {
+          results[label] = { ok: true, detail: 'Función accesible (registro de prueba no existe, normal)' };
+        } else {
+          results[label] = { ok: false, detail: `Error Moodle [${data.errorcode}]: ${data.message}` };
+        }
+      } else {
+        results[label] = { ok: true, detail: 'Función accesible y responde correctamente' };
+      }
+    } catch (e: any) {
+      results[label] = { ok: false, detail: `Error de red: ${e.message}` };
+    }
+  };
+
+  // --- Funciones core ya existentes ---
+  await probe('core_enrol_get_enrolled_users',    'core_enrol_get_enrolled_users',    { courseid: courseId });
+  await probe('enrol_manual_enrol_users',          'enrol_manual_enrol_users',          {});
+  await probe('core_group_get_course_groups',      'core_group_get_course_groups',      { courseid: courseId });
+  await probe('core_group_get_group_members',      'core_group_get_group_members',      { 'groupids[0]': 0 });
+  await probe('core_message_send_instant_messages','core_message_send_instant_messages',{});
+
+  // --- Funciones nuevas del plugin de inscripción condicional ---
+  await probe('enrol_courseapproval_get_instances',   'enrol_courseapproval_get_instances',   { courseid: courseId });
+  await probe('enrol_courseapproval_add_instance',    'enrol_courseapproval_add_instance',    {});
+  await probe('enrol_courseapproval_delete_instance', 'enrol_courseapproval_delete_instance', {});
+
+  // --- Funciones nuevas para herencia de grupos ---
+  await probe('core_group_create_groups',    'core_group_create_groups',    {});
+  await probe('core_group_add_group_members','core_group_add_group_members',{});
+
+  const total   = Object.keys(results).length;
+  const passing = Object.values(results).filter(r => r.ok).length;
+  const failing = Object.values(results).filter(r => !r.ok);
+
+  res.json({
+    ok: failing.length === 0,
+    summary: `${passing}/${total} funciones OK${failing.length ? ' — ' + failing.map(f => Object.keys(results).find(k => results[k] === f)).join(', ') + ' fallaron' : ''}`,
+    results
+  });
+});
+
 // ENDPOINT SECRETO PARA GENERAR DATOS DE PRUEBA DESDE EL NAVEGADOR
 app.get('/api/demo/seed/:courseId', async (req: any, res: any) => {
   try {
