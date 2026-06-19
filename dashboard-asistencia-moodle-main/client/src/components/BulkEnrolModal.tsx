@@ -151,7 +151,8 @@ export function BulkEnrolModal({ show, onHide, destCourse }: BulkEnrolModalProps
         try {
             const res = await axios.post('/api/moodle/bulk-enrol', {
                 destCourseId: destCourse.courseId,
-                userIds: toEnrol
+                userIds: toEnrol,
+                sourceCourseId: sourceCourseId || undefined
             });
             if (res.data.ok) {
                 setResults(res.data.results);

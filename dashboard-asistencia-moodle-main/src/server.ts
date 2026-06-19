@@ -24,6 +24,11 @@ const PORT = process.env.PORT || 3000;
 const MOODLE_URL = process.env.MOODLE_URL;
 const MOODLE_TOKEN = process.env.MOODLE_TOKEN;
 const MINUTOS_OBJETIVO_DIARIO = 170;
+// Umbral de inactividad para separar sesiones (algoritmo del bloque Course Dedication de Moodle).
+// Si entre dos eventos consecutivos del log pasa MÁS de este tiempo, se considera que el alumno
+// se ausentó: la sesión se cierra y el hueco NO se cuenta. Moodle usa 60 min por defecto; 30 es
+// más estricto y adecuado para clases de horario fijo. Configurable vía MOODLE_IDLE_MIN.
+const UMBRAL_INACTIVIDAD_MIN = Number(process.env.MOODLE_IDLE_MIN) || 30;
 
 // Helpers globales
 const cleanMoodleResponse = (data: any) => {
@@ -446,16 +451,20 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
         wsfunction: 'core_reportbuilder_retrieve_report',
         moodlewsrestformat: 'json',
         reportid: 12,
-        perpage: 100
+        perpage: 1000
       }
     });
 
     // Limpiar respuesta por si Moodle mandó basura debug de PHP
     const reportData = (typeof moodleRaw.data === 'string') ? cleanMoodleResponse(moodleRaw.data) : moodleRaw.data;
     const rows: any[] = reportData?.data?.rows || reportData?.rows || [];
+    console.log(`📊 Reporte Moodle: ${rows.length} filas totales. Enrolled: ${enrolledList.length} usuarios.`);
+    if (rows.length === 0) {
+      console.log(`🔍 Respuesta Moodle raw (primeros 500 chars):`, JSON.stringify(reportData).substring(0, 500));
+    }
 
     // Estructuras
-    type DayItem = { fecha: string; minutos: number; firstTs: number; lastTs: number; entrada?: string; salida?: string; };
+    type DayItem = { fecha: string; minutos: number; firstTs: number; lastTs: number; events?: number[]; entrada?: string; salida?: string; };
     type UserAgg = { usuario: string; nombre: string; groupName: string; minutosTotales: number; diasDetalle: DayItem[] };
     const byUser = new Map<string, UserAgg>();
 
@@ -469,6 +478,23 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
         diasDetalle: []
       });
     });
+
+    // Registra un evento (timestamp en ms) en el día correspondiente de un usuario.
+    // Mantiene firstTs/lastTs (primer y último acceso) y acumula CADA evento en events[]
+    // para poder reconstruir las sesiones reales más adelante.
+    const registrarEvento = (agg: UserAgg, ts: number) => {
+      const fecha = new Date(ts).toISOString().split('T')[0];
+      const idx = agg.diasDetalle.findIndex((dd) => dd.fecha === fecha);
+      if (idx >= 0) {
+        const dia = agg.diasDetalle[idx];
+        if (ts < dia.firstTs) dia.firstTs = ts;
+        if (ts > dia.lastTs) dia.lastTs = ts;
+        if (!dia.events) dia.events = [];
+        dia.events.push(ts);
+      } else {
+        agg.diasDetalle.push({ fecha, minutos: 0, firstTs: ts, lastTs: ts, events: [ts] });
+      }
+    };
 
     const usernameIdx = 0;
     const courseShortIdx = 1;
@@ -529,6 +555,18 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
       return 0;
     };
 
+    // Pre-calcular sessionMinutes y límites del horario (constantes para todo el proceso)
+    const schedParts = horarioCurso.split('-').map((p: string) => p.trim());
+    let sessionMinutes = MINUTOS_OBJETIVO_DIARIO;
+    if (schedParts.length === 2) {
+      const [sh, sm] = schedParts[0].split(':').map(Number);
+      const [eh, em] = schedParts[1].split(':').map(Number);
+      const scheduleMinutes = (eh * 60 + em) - (sh * 60 + sm);
+      sessionMinutes = Math.min(scheduleMinutes > 0 ? scheduleMinutes : MINUTOS_OBJETIVO_DIARIO, MINUTOS_OBJETIVO_DIARIO);
+    }
+    const schedHoraInicio = schedParts.length === 2 ? parseFloat(schedParts[0].replace('H', '').replace(':', '.')) : 0;
+    const schedHoraFin = schedParts.length === 2 ? parseFloat(schedParts[1].replace('H', '').replace(':', '.')) : 24;
+
     for (const row of rows) {
       const cells = row.columns || [];
       const user = toText(cells[usernameIdx]).trim();
@@ -547,81 +585,119 @@ app.get('/api/dailystats/:courseId', async (req: any, res: any) => {
         (dbCourseFullname && normMoodle.includes(dbCourseFullname)) ||
         normMoodle.endsWith(' ' + normFront);
 
-      if (!isMatch) {
-        if (rows.indexOf(row) < 3) console.log(`DEBUG: Course mismatch - Moodle: "${normMoodle}", Target: "${normFront}"`);
-        continue;
-      }
+      if (!isMatch) continue;
       if (!user) continue;
 
       const rawUserKey = normalizeUserKey(user);
       const userKey = userAliasToUsername.get(rawUserKey) || rawUserKey;
       if (!byUser.has(userKey)) {
-        if (rows.indexOf(row) < 5) console.log(`DEBUG: User not in enrolled list: raw="${rawUserKey}" resolved="${userKey}"`);
+        console.log(`⚠️ SKIP usuario no matriculado: raw="${rawUserKey}" resolved="${userKey}" curso="${courseVal}"`);
         continue;
       }
 
-      console.log(`DEBUG: Processing row for user "${rawUserKey}" as "${userKey}" course "${courseVal}"`);
       const agg = byUser.get(userKey)!;
 
       // Parse last access date (Col 2) - English format with AM/PM
       const dateTextRaw = toText(cells[dateIdx]);
       if (!dateTextRaw || dateTextRaw.toLowerCase() === 'never' || dateTextRaw.toLowerCase() === 'nunca') {
-        console.log(`DEBUG: User "${userKey}" has no access date (Never)`);
+        console.log(`⛔ Sin acceso: "${userKey}" → "${dateTextRaw || 'vacío'}"`);
         continue;
       }
+      console.log(`✅ Acceso: "${userKey}" fecha="${dateTextRaw}"`);
 
       const startTimestamp = parseSpanishDate(dateTextRaw);
 
       if (startTimestamp > 0) {
-        // If we have duration data, use it; otherwise estimate based on schedule
-        let sessionMinutes = parseDuration(durText);
-        if (sessionMinutes === 0 && durationIdx < 0) {
-          // No duration column available - estimate a default session
-          // Parse the schedule to get the max daily minutes
-          const parts = horarioCurso.split('-').map((p: string) => p.trim());
-          if (parts.length === 2) {
-            const [sh, sm] = parts[0].split(':').map(Number);
-            const [eh, em] = parts[1].split(':').map(Number);
-            const scheduleMinutes = (eh * 60 + em) - (sh * 60 + sm);
-            // Use the configured daily objective or schedule as estimate
-            sessionMinutes = Math.min(scheduleMinutes > 0 ? scheduleMinutes : MINUTOS_OBJETIVO_DIARIO, MINUTOS_OBJETIVO_DIARIO);
-          } else {
-            sessionMinutes = MINUTOS_OBJETIVO_DIARIO;
-          }
-        }
-
-        const endTimestamp = startTimestamp + (sessionMinutes * 60 * 1000);
-        const d = new Date(startTimestamp);
-        const fecha = d.toISOString().split('T')[0];
-
-        // Find or create day entry
-        const idx = agg.diasDetalle.findIndex((d) => d.fecha === fecha);
-
-        if (idx >= 0) {
-          if (startTimestamp < agg.diasDetalle[idx].firstTs) agg.diasDetalle[idx].firstTs = startTimestamp;
-          if (endTimestamp > agg.diasDetalle[idx].lastTs) agg.diasDetalle[idx].lastTs = endTimestamp;
-        } else {
-          agg.diasDetalle.push({
-            fecha,
-            minutos: 0,
-            firstTs: startTimestamp,
-            lastTs: endTimestamp
-          });
-        }
+        // Timestamp de último acceso del reporte (un solo valor por fila).
+        registrarEvento(agg, startTimestamp);
       }
+    }
+
+    // Fuente alternativa: lastcourseaccess desde la lista de matriculados.
+    // Se usa cuando el reporte Moodle (reportid 12) falla o devuelve 0 filas.
+    // El merge respeta entradas ya existentes del reporte si las hay.
+    let lcaCount = 0;
+    for (const u of enrolledList) {
+      const uname = normalizeUserKey(u?.username);
+      if (!byUser.has(uname)) continue;
+      const lastCourseAccess: number = u?.lastcourseaccess ?? 0;
+      if (!lastCourseAccess || lastCourseAccess <= 0) continue;
+
+      const accessTs = lastCourseAccess * 1000; // Unix seconds → ms
+      registrarEvento(byUser.get(uname)!, accessTs);
+      lcaCount++;
+    }
+    if (lcaCount > 0) console.log(`📌 lastcourseaccess: ${lcaCount} usuarios con acceso reciente registrado.`);
+
+    // FUENTE PRINCIPAL PARA TIEMPOS REALES: registro de eventos de Moodle.
+    // Moodle core NO expone ninguna función webservice que lea logstore_standard_log
+    // (verificado contra el código fuente: report/log no registra funciones WS, y
+    // report_log_get_log_records no existe). Para obtener el flujo de eventos hay que
+    // instalar un plugin que lo exponga (ej: local_wsgetlog) y declarar el nombre de su
+    // función vía la variable de entorno MOODLE_LOG_WSFUNCTION. Cada evento aporta un
+    // timestamp; con varios eventos por día se reconstruye la duración real de sesión.
+    const logWsFunction = process.env.MOODLE_LOG_WSFUNCTION;
+    if (logWsFunction) {
+      try {
+        const ninetyDaysAgo = Math.floor(Date.now() / 1000) - (90 * 24 * 60 * 60);
+        const logsResp = await axios.post(moodleConfig.wsUrl, null, {
+          params: {
+            wstoken: moodleConfig.moodleToken,
+            wsfunction: logWsFunction,
+            moodlewsrestformat: 'json',
+            'courseids[0]': moodleCourseId,
+            courseid: moodleCourseId,
+            since: ninetyDaysAgo,
+            date: ninetyDaysAgo,
+            userid: 0,
+          }
+        });
+        const logsData = (typeof logsResp.data === 'string') ? cleanMoodleResponse(logsResp.data) : logsResp.data;
+
+        if (logsData?.exception || logsData?.errorcode) {
+          console.warn(`⚠️ Logs (${logWsFunction}) no accesibles: ${logsData?.message || logsData?.errorcode}`);
+        } else {
+          // Acepta varias formas de respuesta: {logs:[...]}, {events:[...]}, {data:{rows:[...]}} o array directo.
+          const logEntries: any[] = Array.isArray(logsData)
+            ? logsData
+            : (logsData?.logs || logsData?.events || logsData?.data?.rows || []);
+          let logAssigned = 0;
+          for (const entry of logEntries) {
+            const userId = Number(entry.userid ?? entry.relateduserid ?? entry.realuserid);
+            const username = userIdToUsername.get(userId);
+            if (!username || !byUser.has(username)) continue;
+            const tsSec = Number(entry.timecreated ?? entry.time ?? 0);
+            if (!tsSec) continue;
+            registrarEvento(byUser.get(username)!, tsSec * 1000);
+            logAssigned++;
+          }
+          console.log(`📋 Logs reales (${logWsFunction}): ${logEntries.length} eventos → ${logAssigned} asignados.`);
+        }
+      } catch (logErr: any) {
+        console.warn(`⚠️ Error al leer logs (${logWsFunction}):`, logErr?.response?.data?.message || logErr?.message);
+      }
+    } else {
+      console.log('ℹ️ Sin feed de eventos (MOODLE_LOG_WSFUNCTION no definida): los minutos son estimación por acceso, no tiempo real.');
     }
 
     byUser.forEach((userAgg) => {
       let totalUsuario = 0;
 
       userAgg.diasDetalle.forEach((dia) => {
-        const fechaEntrada = new Date(dia.firstTs);
-        const fechaSalida = new Date(dia.lastTs);
+        const eventos = (dia.events && dia.events.length) ? dia.events : [dia.firstTs];
+        let minutosReales: number;
 
-        const minutosReales = calcularMinutosEnHorario(fechaEntrada, fechaSalida, horarioCurso);
+        if (eventos.length >= 2) {
+          // Varios eventos del día: reconstrucción REAL de sesiones (algoritmo Dedication).
+          minutosReales = reconstruirMinutosSesion(eventos, horarioCurso);
+        } else {
+          // Un solo evento (caso típico con lastcourseaccess): la duración real es
+          // desconocida. Se otorga crédito completo si el acceso cae dentro del horario.
+          const accessHour = new Date(dia.firstTs).getHours() + new Date(dia.firstTs).getMinutes() / 60;
+          minutosReales = (accessHour >= schedHoraInicio && accessHour <= schedHoraFin) ? sessionMinutes : 0;
+        }
 
         dia.minutos = minutosReales;
-
         totalUsuario += minutosReales;
       });
 
@@ -1152,24 +1228,31 @@ app.get('/api/reports/daily-export', async (req: any, res: any) => {
         if (diaData.firstTs) entradaStr = formatTime(diaData.firstTs);
         if (diaData.lastTs) salidaStr = formatTime(diaData.lastTs);
 
-        if (!esNoLectivo && diaData.firstTs && diaData.lastTs) {
-          const dStart = new Date(diaData.firstTs);
-          const dEnd = new Date(diaData.lastTs);
+        if (!esNoLectivo) {
+          // Los minutos REALES ya fueron calculados en /api/dailystats (reconstrucción de
+          // sesiones cuando hay feed de eventos, o estimación por acceso si no lo hay).
+          // Aquí se confía en ese valor para mantener consistencia con el dashboard.
+          minutosDia = diaData.minutos ?? 0;
 
-          // Convertir a decimal (hora local del servidor)
-          const actualStart = dStart.getHours() + (dStart.getMinutes() / 60);
-          const actualEnd = dEnd.getHours() + (dEnd.getMinutes() / 60);
+          // Entrada/salida solo para visualización: primer y último acceso recortados al horario.
+          if (diaData.firstTs && diaData.lastTs) {
+            const dStart = new Date(diaData.firstTs);
+            const dEnd = new Date(diaData.lastTs);
+            const actualStart = dStart.getHours() + (dStart.getMinutes() / 60);
+            const actualEnd = dEnd.getHours() + (dEnd.getMinutes() / 60);
 
-          const effectiveStart = Math.max(actualStart, limitStart);
-          const effectiveEnd = Math.min(actualEnd, limitEnd);
+            const effectiveStart = Math.max(actualStart, limitStart);
+            let effectiveEnd = Math.min(actualEnd, limitEnd);
 
-          if (effectiveEnd > effectiveStart) {
-            minutosDia = Math.round((effectiveEnd - effectiveStart) * 60);
+            // Acceso único: sintetizar la salida a partir de los minutos estimados.
+            if (diaData.firstTs === diaData.lastTs && minutosDia > 0) {
+              effectiveEnd = Math.min(effectiveStart + (minutosDia / 60), limitEnd);
+            }
 
-            entradaStr = decimalToTimeStr(effectiveStart);
-            salidaStr = decimalToTimeStr(effectiveEnd);
-          } else {
-            minutosDia = 0;
+            if (effectiveEnd >= effectiveStart) {
+              entradaStr = decimalToTimeStr(effectiveStart);
+              salidaStr = decimalToTimeStr(effectiveEnd);
+            }
           }
         }
       }
@@ -1240,6 +1323,26 @@ app.get('/api/usuarios/:courseId', async (req: any, res: any) => {
 });
 
 // Ruta de depuración de reportes nativos de Moodle
+app.get('/api/debug/list-reports', async (req: any, res: any) => {
+  try {
+    const db = await connectDB();
+    const moodleConfig = await getMoodleAccessConfig(db, null as any, { allowGlobalFallback: true });
+    const resp = await axios.post(moodleConfig.wsUrl, null, {
+      params: {
+        wstoken: moodleConfig.moodleToken,
+        wsfunction: 'core_reportbuilder_list_reports',
+        moodlewsrestformat: 'json',
+        perpage: 100,
+        pagenumber: 0,
+      }
+    });
+    const data = (typeof resp.data === 'string') ? cleanMoodleResponse(resp.data) : resp.data;
+    return res.json({ ok: true, data });
+  } catch (err: any) {
+    return res.status(500).json({ error: err?.message, detail: err?.response?.data });
+  }
+});
+
 app.get('/api/debug/native-report', async (req: any, res: any) => {
   try {
     const reportid = req.query.reportid;
@@ -2026,10 +2129,127 @@ app.get('/api/moodle/enrolled-users/:courseId', async (req: any, res: any) => {
   }
 });
 
+// Helper: hereda los grupos del curso origen al curso destino para los usuarios indicados.
+// Por cada grupo del origen donde esté el usuario, crea (si falta) un grupo con el mismo
+// nombre en el destino y añade al usuario. No es fatal: si algo falla, la inscripción se mantiene.
+async function inheritGroupsForUsers(
+  moodleConfig: any,
+  sourceCourseId: number,
+  destCourseId: number,
+  userIds: number[]
+): Promise<{ groupsCreated: number; membershipsAdded: number }> {
+  const summary = { groupsCreated: 0, membershipsAdded: 0 };
+  if (!sourceCourseId || !destCourseId || !Array.isArray(userIds) || userIds.length === 0) {
+    return summary;
+  }
+  const userIdSet = new Set(userIds.map(Number));
+
+  // 1. Grupos del curso origen.
+  const srcGroupsResp = await axios.get(moodleConfig.wsUrl, {
+    params: {
+      wstoken: moodleConfig.moodleToken,
+      wsfunction: 'core_group_get_course_groups',
+      moodlewsrestformat: 'json',
+      courseid: sourceCourseId
+    }
+  });
+  const srcGroups: any[] = Array.isArray(srcGroupsResp.data) ? srcGroupsResp.data : [];
+  if (srcGroups.length === 0) return summary;
+
+  // 2. Miembros de cada grupo del origen.
+  const memberParams: any = {};
+  srcGroups.forEach((g: any, i: number) => { memberParams[`groupids[${i}]`] = g.id; });
+  const membersResp = await axios.get(moodleConfig.wsUrl, {
+    params: {
+      wstoken: moodleConfig.moodleToken,
+      wsfunction: 'core_group_get_group_members',
+      moodlewsrestformat: 'json',
+      ...memberParams
+    }
+  });
+  const membersByGroup: any[] = Array.isArray(membersResp.data) ? membersResp.data : [];
+
+  // srcGroupId -> [userIds nuestros que están en ese grupo]
+  const relevantByGroup = new Map<number, number[]>();
+  membersByGroup.forEach((m: any) => {
+    const relevant = (m.userids || []).map(Number).filter((uid: number) => userIdSet.has(uid));
+    if (relevant.length > 0) relevantByGroup.set(Number(m.groupid), relevant);
+  });
+  if (relevantByGroup.size === 0) return summary;
+
+  // 3. Grupos existentes en el destino (nombre -> id).
+  const destGroupsResp = await axios.get(moodleConfig.wsUrl, {
+    params: {
+      wstoken: moodleConfig.moodleToken,
+      wsfunction: 'core_group_get_course_groups',
+      moodlewsrestformat: 'json',
+      courseid: destCourseId
+    }
+  });
+  const destGroups: any[] = Array.isArray(destGroupsResp.data) ? destGroupsResp.data : [];
+  const destIdByName = new Map<string, number>();
+  destGroups.forEach((g: any) => destIdByName.set(g.name, g.id));
+
+  const srcGroupById = new Map<number, any>();
+  srcGroups.forEach((g: any) => srcGroupById.set(Number(g.id), g));
+
+  // 4. Asegurar grupo destino por nombre (crear si falta) y juntar membresías a añadir.
+  const membersToAdd: { groupid: number; userid: number }[] = [];
+
+  for (const [srcGroupId, relevantUsers] of relevantByGroup.entries()) {
+    const srcGroup = srcGroupById.get(srcGroupId);
+    if (!srcGroup) continue;
+
+    let destGroupId = destIdByName.get(srcGroup.name);
+    if (!destGroupId) {
+      const createResp = await axios.post(moodleConfig.wsUrl, null, {
+        params: {
+          wstoken: moodleConfig.moodleToken,
+          wsfunction: 'core_group_create_groups',
+          moodlewsrestformat: 'json',
+          'groups[0][courseid]': destCourseId,
+          'groups[0][name]': srcGroup.name,
+          'groups[0][description]': srcGroup.description || '',
+          'groups[0][descriptionformat]': srcGroup.descriptionformat ?? 1
+        }
+      });
+      if (Array.isArray(createResp.data) && createResp.data[0] && createResp.data[0].id) {
+        destGroupId = Number(createResp.data[0].id);
+        destIdByName.set(srcGroup.name, destGroupId);
+        summary.groupsCreated++;
+      } else {
+        continue; // No se pudo crear el grupo; lo saltamos.
+      }
+    }
+
+    relevantUsers.forEach((uid) => membersToAdd.push({ groupid: destGroupId as number, userid: uid }));
+  }
+
+  // 5. Añadir miembros en lote.
+  if (membersToAdd.length > 0) {
+    const addParams: any = {};
+    membersToAdd.forEach((m, i) => {
+      addParams[`members[${i}][groupid]`] = m.groupid;
+      addParams[`members[${i}][userid]`] = m.userid;
+    });
+    await axios.post(moodleConfig.wsUrl, null, {
+      params: {
+        wstoken: moodleConfig.moodleToken,
+        wsfunction: 'core_group_add_group_members',
+        moodlewsrestformat: 'json',
+        ...addParams
+      }
+    });
+    summary.membershipsAdded = membersToAdd.length;
+  }
+
+  return summary;
+}
+
 // 3. Inscribir alumnos masivamente en un curso destino
 app.post('/api/moodle/bulk-enrol', async (req: any, res: any) => {
   try {
-    const { destCourseId, userIds, roleId = 5 } = req.body;
+    const { destCourseId, userIds, roleId = 5, sourceCourseId } = req.body;
 
     if (!destCourseId || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({ ok: false, error: 'destCourseId y userIds[] son requeridos' });
@@ -2111,6 +2331,20 @@ app.post('/api/moodle/bulk-enrol', async (req: any, res: any) => {
       }
     }
 
+    // 5. Heredar los grupos del curso origen (si se indicó). No es fatal: la inscripción ya fue exitosa.
+    let groupSync: { groupsCreated: number; membershipsAdded: number } | undefined;
+    if (sourceCourseId) {
+      try {
+        groupSync = await inheritGroupsForUsers(moodleConfig, Number(sourceCourseId), Number(destCourseId), newUserIds);
+        if (groupSync.groupsCreated > 0 || groupSync.membershipsAdded > 0) {
+          console.log(`👥 Grupos heredados: ${groupSync.groupsCreated} creados, ${groupSync.membershipsAdded} membresías añadidas`);
+        }
+      } catch (e: any) {
+        console.log('⚠️ No se pudieron heredar los grupos del curso origen:', e?.message || e);
+        warnings.push('Los alumnos fueron inscritos, pero no se pudieron heredar todos los grupos del curso origen.');
+      }
+    }
+
     console.log(`✅ Inscripción masiva completada: ${newUserIds.length} inscritos, ${skippedCount} omitidos`);
     res.json({
       ok: true,
@@ -2120,6 +2354,7 @@ app.post('/api/moodle/bulk-enrol', async (req: any, res: any) => {
         error: 0,
         total: userIds.length
       },
+      groupSync,
       warnings: warnings.length > 0 ? warnings : undefined
     });
   } catch (error: any) {
@@ -2463,6 +2698,69 @@ async function initAdminUser() {
 }
 
 initAdminUser();
+
+// Parsea "HH:MM" a hora decimal REAL: "09:30" -> 9.5 (no 9.30). Acepta "9H30", "09:30", "9".
+function parseHoraDecimal(str: string, fallback: number): number {
+  if (!str) return fallback;
+  const limpio = str.trim().replace(/H/gi, ':').replace(/\s/g, '');
+  const m = limpio.match(/^(\d{1,2})[:.](\d{1,2})$/);
+  if (m) return parseInt(m[1], 10) + parseInt(m[2], 10) / 60;
+  const soloHora = limpio.match(/^(\d{1,2})$/);
+  if (soloHora) return parseInt(soloHora[1], 10);
+  return fallback;
+}
+
+// Reconstruye los MINUTOS REALES de sesión a partir de TODOS los eventos de un día.
+// Replica el algoritmo del bloque Course Dedication de Moodle (verificado contra su código):
+//   1. ordena los eventos por tiempo,
+//   2. recorre: si el hueco entre dos eventos consecutivos SUPERA el umbral de inactividad,
+//      cierra la sesión actual (el hueco NO se cuenta) y abre una nueva,
+//   3. la duración de cada sesión = último clic - primer clic de esa sesión,
+//   4. suma todas las sesiones del día.
+// Además recorta los eventos a la ventana horaria del curso (ej: 09:00-14:00).
+// Un solo evento => 0 (la duración real es desconocida; ese caso lo trata el llamador).
+function reconstruirMinutosSesion(
+  eventosMs: number[],
+  horarioTexto: string,
+  umbralInactividadMin: number = UMBRAL_INACTIVIDAD_MIN
+): number {
+  if (!eventosMs || eventosMs.length === 0) return 0;
+
+  // Ventana horaria permitida (hora decimal local).
+  let horaInicio = 0;
+  let horaFin = 24;
+  if (horarioTexto && horarioTexto.includes('-')) {
+    const partes = horarioTexto.split('-');
+    horaInicio = parseHoraDecimal(partes[0], 0);
+    horaFin = parseHoraDecimal(partes[1], 24);
+  }
+
+  const dentroHorario = (ts: number) => {
+    const d = new Date(ts);
+    const h = d.getHours() + d.getMinutes() / 60;
+    return h >= horaInicio && h <= horaFin;
+  };
+
+  const ev = eventosMs.filter(dentroHorario).sort((a, b) => a - b);
+  if (ev.length < 2) return 0;
+
+  const umbralMs = umbralInactividadMin * 60_000;
+  let sessionStart = ev[0];
+  let prev = ev[0];
+  let totalMs = 0;
+
+  for (let i = 1; i < ev.length; i++) {
+    const t = ev[i];
+    if (t - prev > umbralMs) {          // hueco > umbral -> cierra la sesión
+      totalMs += prev - sessionStart;   // cuenta solo primer..último clic de la sesión
+      sessionStart = t;                 // abre una sesión nueva
+    }
+    prev = t;
+  }
+  totalMs += prev - sessionStart;       // CRÍTICO: cerrar la última sesión abierta
+
+  return Math.round(totalMs / 60_000);
+}
 
 function calcularMinutosEnHorario(primeraHora: Date, ultimaHora: Date, horarioTexto: string): number {
   if (primeraHora.getTime() === ultimaHora.getTime()) return 0;
